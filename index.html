@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MikroTik Tools • Generator</title>
   <meta name="description" content="Free MikroTik RouterOS online tools & generators — modern, fast, and mobile-friendly." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
   <style>
     :root{
       --bg:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#ff7a18; --glass: rgba(255,255,255,0.03);
@@ -31,7 +30,8 @@
     .btn-primary{background:linear-gradient(90deg,var(--accent),#ffb86b);color:#06121a}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
     section.tools{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
-    .tool{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:12px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between}
+    .tool{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:12px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.2s}
+    .tool:hover{transform:translateY(-3px)}
     .tool h4{margin:0 0 8px;font-size:15px}
     .tool p{color:var(--muted);margin:0 0 12px;font-size:13px}
     .tag{display:inline-block;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);font-weight:700;color:var(--muted);font-size:12px}
@@ -66,62 +66,49 @@
     </div>
 
     <section id="tools" class="tools">
-      <article class="tool">
-        <h4><a href="mikrotik-access-block.html">Block Access (YouTube, FB, TikTok, WA)</a></h4>
-        <p>Script generator untuk memblokir akses ke aplikasi & website populer.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-backup-to-mail.html">Auto Backup to Mail</a></h4>
-        <p>Script otomatis mengirim file backup RouterOS langsung ke email Anda.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-block-sharing-hotspot.html">Block Sharing Hotspot</a></h4>
-        <p>Generator untuk mencegah sharing koneksi hotspot menggunakan TTL.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-block-website-generator.html">Block Website</a></h4>
-        <p>Script generator untuk memblokir website tertentu pada jaringan.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-bonding-interface.html">Bonding Interface</a></h4>
-        <p>Generator konfigurasi Link Aggregation (bonding interface).</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-burst-limit-calculator.html">Burst Limit Calculator</a></h4>
-        <p>Kalkulator untuk menghitung burst limit Hotspot/PPPoE/Queue.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-change-mac-address.html">Change MAC Address</a></h4>
-        <p>Generator script untuk mengganti atau randomisasi MAC Address.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-dhcp-rogue.html">DHCP Rogue Detection</a></h4>
-        <p>Deteksi server DHCP liar (rogue) di jaringan Anda.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
-      <article class="tool">
-        <h4><a href="mikrotik-expired-isolate-pppoe-hotspot.html">Expired User Isolation</a></h4>
-        <p>Script isolasi client PPPoE/Hotspot yang sudah expired.</p>
-        <div><span class="tag">Open</span></div>
-      </article>
+      <div id="tools-list">Loading tools...</div>
     </section>
 
     <footer>
-      <div style="font-size:14px;color:var(--muted)">© <span id="yr"></span> mikrotikscript.github.io — Built with ❤️</div>
-      <div>
-        <a class="tag" href="https://github.com/mikrotikscript">GitHub</a>
-      </div>
+      <div style="font-size:14px;color:var(--muted)">© <span id="yr"></span> buananetpbun.github.io — Built with ❤️</div>
+      <div><a class="tag" href="https://github.com/buananetpbun">GitHub</a></div>
     </footer>
   </div>
+
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
+
+    const username = "buananetpbun";   // Ganti sesuai username Anda
+    const repo = "buananetpbun.github.io"; // Ganti sesuai repo Anda
+    const branch = "main";
+
+    async function loadFiles() {
+      const res = await fetch(`https://api.github.com/repos/${username}/${repo}/git/trees/${branch}?recursive=1`);
+      const data = await res.json();
+      const files = data.tree.filter(item => item.path.endsWith(".html") && item.path !== "index.html");
+
+      const toolsContainer = document.getElementById("tools-list");
+      toolsContainer.innerHTML = "";
+
+      files.forEach(file => {
+        const name = file.path.replace(".html","").replace("mikrotik-","").replace(/-/g," ");
+        const card = document.createElement("article");
+        card.className = "tool";
+        card.innerHTML = `
+          <div>
+            <h4><a href="${file.path}">${name.charAt(0).toUpperCase()+name.slice(1)}</a></h4>
+            <p>Tool generator untuk ${name}.</p>
+          </div>
+          <div><span class="tag">Open</span></div>
+        `;
+        toolsContainer.appendChild(card);
+      });
+    }
+
+    loadFiles().catch(err => {
+      document.getElementById("tools-list").innerHTML = "Gagal memuat daftar tools.";
+      console.error(err);
+    });
   </script>
 </body>
 </html>
