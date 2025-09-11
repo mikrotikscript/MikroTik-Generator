@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MikroTik Tools • Generator</title>
+  <meta name="description" content="Free MikroTik RouterOS online tools & generators — modern, fast, and mobile-friendly." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#ff7a18; --glass: rgba(255,255,255,0.03);
+      --radius:12px; --maxw:1100px; --gap:20px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background:linear-gradient(180deg,#081023 0%,#06121a 60%);color:#e6eef8}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:var(--maxw);margin:36px auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffb86b);display:flex;align-items:center;justify-content:center;font-weight:800;color:#06121a;font-size:20px}
+    .brand h1{margin:0;font-size:18px}
+    nav{display:flex;gap:10px;align-items:center}
+    nav a{color:var(--muted);padding:8px 12px;border-radius:10px;font-weight:600}
+    nav a:hover{background:var(--glass);color:#fff}
+    .hero{margin-top:22px}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:28px;border-radius:var(--radius);box-shadow:0 6px 30px rgba(2,6,23,0.6);}
+    .title{font-size:28px;margin:0 0 10px 0;line-height:1.05}
+    .subtitle{color:var(--muted);margin:0 0 18px}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#ffb86b);color:#06121a}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    section.tools{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .tool{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:12px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between}
+    .tool h4{margin:0 0 8px;font-size:15px}
+    .tool p{color:var(--muted);margin:0 0 12px;font-size:13px}
+    .tag{display:inline-block;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);font-weight:700;color:var(--muted);font-size:12px}
+    footer{margin-top:34px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));display:flex;justify-content:space-between;align-items:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">MT</div>
+        <div>
+          <h1>MikroTik Generator</h1>
+          <div style="font-size:13px;color:var(--muted)">Free RouterOS tools & script generators</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#tools">Tools</a>
+        <a href="#about">About</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div class="hero-card">
+        <h2 class="title">Easy config with smart generator tools for <strong>MikroTik RouterOS</strong></h2>
+        <p class="subtitle">Buat script konfigurasi load-balancing, hotspot, VPN, queue, dan banyak lagi — tanpa harus menulis dari nol.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#tools">Mulai Sekarang</a>
+          <a class="btn btn-ghost" href="#about">Tentang</a>
+        </div>
+      </div>
+    </div>
+
+    <section id="tools" class="tools">
+      <article class="tool">
+        <h4><a href="mikrotik-access-block.html">Block Access (YouTube, FB, TikTok, WA)</a></h4>
+        <p>Script generator untuk memblokir akses ke aplikasi & website populer.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-backup-to-mail.html">Auto Backup to Mail</a></h4>
+        <p>Script otomatis mengirim file backup RouterOS langsung ke email Anda.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-block-sharing-hotspot.html">Block Sharing Hotspot</a></h4>
+        <p>Generator untuk mencegah sharing koneksi hotspot menggunakan TTL.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-block-website-generator.html">Block Website</a></h4>
+        <p>Script generator untuk memblokir website tertentu pada jaringan.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-bonding-interface.html">Bonding Interface</a></h4>
+        <p>Generator konfigurasi Link Aggregation (bonding interface).</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-burst-limit-calculator.html">Burst Limit Calculator</a></h4>
+        <p>Kalkulator untuk menghitung burst limit Hotspot/PPPoE/Queue.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-change-mac-address.html">Change MAC Address</a></h4>
+        <p>Generator script untuk mengganti atau randomisasi MAC Address.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-dhcp-rogue.html">DHCP Rogue Detection</a></h4>
+        <p>Deteksi server DHCP liar (rogue) di jaringan Anda.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+      <article class="tool">
+        <h4><a href="mikrotik-expired-isolate-pppoe-hotspot.html">Expired User Isolation</a></h4>
+        <p>Script isolasi client PPPoE/Hotspot yang sudah expired.</p>
+        <div><span class="tag">Open</span></div>
+      </article>
+    </section>
+
+    <footer>
+      <div style="font-size:14px;color:var(--muted)">© <span id="yr"></span> buananetpbun.github.io — Built with ❤️</div>
+      <div>
+        <a class="tag" href="https://github.com/buananetpbun">GitHub</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
