@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Load Balancing PCC (LB PCC) Script Generator - mikrotikscript.Github.io</title>
+    <meta content='Load Balancing (LB PCC) Script Generator ' name='description'>
+    <meta content='script generator, mikrotik, lb pcc, PCC, load balancing, router, winbox, terminal, rsc, script' name='keywords'>
+    <meta content='index, follow, noodp' name='robots'>
+    <link rel="shortcut icon" href="https://mikrotikscript.github.io/favicon.ico" type="image/x-icon">
+
+    <style>
+      /* --------------------------------------------
+      # LOAD BALANCING PCC / LB PCC SCRIPT GENERATOR
+      # Designer  : MUKIDI STORY / CBN - West Java
+      # Github    : https://mikrotikscript.github.io
+      ----------------------------------------------- */
+      *{-webkit-transition:all .3s ease-in;-moz-transition:all .3s ease-in;-ms-transition:all .3s ease-in;transition:all .3s ease-in}
+      body,div,span,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,textarea,p,blockquote,th,td,tr,table{margin:0;padding:0}
+      body{font-size:14px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";margin:0}
+      html,body{color:#292929;height:100%;width:100%;margin-top:0;padding:0;line-height:normal;background:#292929 url(https://user-images.githubusercontent.com/42666125/147363663-30767ef4-09af-48d6-8ea1-ee7a1c09e90f.png) no-repeat;}
+      *{box-sizing:border-box}
+      .logo{margin-top:10px;margin-bottom:5px;color:#fff;text-decoration:none;font-size:25px;font-weight:700}
+      .logo a{color:#fff!important;text-decoration:none!important}
+      #wrap{max-width:900px;margin:0 auto;color:#ddd; padding:0 5px 0 5px}
+      .header{height:auto;width:100%;margin-top:0;margin-bottom:0px;border-top:0px solid #555}
+      .main-wrap{display:flex}
+      .content{float:right;width:60%;padding:15px;border-top:1px solid #bbb;border-bottom:1px solid #bbb;border-right:1px solid #bbb;background:#ddd;height:auto;color:#333;border-radius:0 5px 5px 0}
+      .sidebar{float:left;width:40%;background-color:#ddd;border:1px solid #bbb;height:auto;color:#333;border-radius:5px 0 0 5px;padding:15px}
+      .footer{font-size:13px;padding-top:15px;padding-bottom:15px;clear:both;width:auto}
+      label {font-weight:600; font-size:14px;}
+      h2{color:#f60}
+      h1{color:#fff;font-size:22px;margin-bottom:5px;margin-top:10px; font-weight:700}
+      a:link{color:#f60}
+      a:visited{color:#f60}
+      a:hover{color:#f60}
+      a:active{color:#f60}      
+      button{margin-top:10px;color:#fff;background-color:#f60;border-color:#f60;border:none;padding:7px;width:120px;font-size:14px;font-weight:700;display:inline-block;cursor:pointer;border-radius:5px;color:#fff}
+      button:hover{background-color:#ccc;color:#111}
+      .row:after{content:"";display:table;clear:both}
+      input[type=text],select,textarea{width:100%;padding:5px;border:1px solid #bbb;border-radius:1px;margin-bottom:10px;margin-top:5px;font-size:14px!important;border-radius:5px}
+      input[type=submit]{background-color:#f60;color:#fff;padding:12px 20px;border:none;border-radius:1px;cursor:pointer;float:right}
+      input[type=submit]:hover{background-color:#45a049}
+      .list-output-content{height:630px;background:#fff;overflow:scroll;width:100%;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:5px;font-size:14px;white-space:nowrap}
+      @media screen and (max-width:700px) {
+      .list-output-content{height:auto}
+      .main-wrap{display:block}
+      .sidebar,.content{border-radius:5px;display:block;width:100%;padding:10px}
+      .sidebar{height:auto;margin-bottom:5px}
+      .header h1{max-width:100%;justify-content:center}
+      .header{border:none}
+      .logo-left a{margin-top:10px!important;font-size:23px}
+      .logo-left img{height:auto;width:41px;margin-top:-5px!important}
+      h1{font-size:21px;text-align:center}
+      .mymenu{width:100%!important}
+      .logo{width:100%}
+      .logo-left{justify-content:center;display:flex;width:100%}
+      .logo-right{justify-content:center;width:100%;display:flex}
+      .footer{font-size:13px;padding-left:5px;padding-right:5px}
+      }
+      @media screen and (max-width:600px) {
+      button{margin-bottom:5px}
+      h1{font-size:19px}
+      .logo-left a{margin-top:10px!important;font-size:20px}
+      .logo-left img{height:auto;width:41px;margin-top:-5px!important}
+      .mikrotik-logo{display:flex;justify-content:center;margin-top:15px}
+      .show-homepage-menu{display:flex;justify-content:center;width:100%;clear:both}
+      .mymenu{padding-left:0;padding-right:0}
+      .mymenu ul{background:none!important;justify-content:center;display:flex}
+      }
+      @media screen and (max-width:500px) {
+      .show-homepage-menu{display:flex;justify-content:center;width:100%}
+      .avatar{display:none}
+      }
+      @media screen and (max-width:350px) {
+      .hide-homepage{display:none}
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="mymenu" class="mymenu">
+        <div class="mikrotik-logo" >
+        </div>
+
+      <div class="logo">
+        <div class="logo-right" style="float:right;">
+          <div style="float:right; margin-right:5px;">
+          </div>
+        </div>
+        <div class="logo-left" style="float:left;">
+          <a href="pcc-clean.html"><span style='color:#ff6600 !important'>mikrotikscript</span>.Github.io</a>
+        </div>
+      </div>
+
+      <div style="clear:both"></div>
+
+      <div class="header">
+        <h1>MIKROTIK <span style="color:#ff6600">LB PCC</span> / <span style="color:#ff6600">LOAD BALANCING PCC</span> SCRIPT GENERATOR FOR ROUTEROS</h1>
+      </div>
+
+      <div class="main-wrap">
+        <div id="sidebar_" class="sidebar">
+          <div style="display:flex">
+            <div style="float:left; width:100%;">
+              <label>Your Line WAN ISP</label><br>
+              <select style="margin-top:5px; width:100%" id="wan-list" onchange="myFunctionOuput()">
+                <option value="line2">2 Line WAN ISP</option>
+                <option value="line3">3 Line WAN ISP</option>
+                <option value="line4">4 Line WAN ISP</option>
+                <option value="line5">5 Line WAN ISP</option>
+                <option value="line6">6 Line WAN ISP</option>
+              </select>
+            </div>
+            <div style="float:left; width:100%; margin-left:10px">
+              <label>RouterOS Version</label>
+              <select style="margin-top:5px; width:100%" id="ros-list" onchange="myFunctionOuput()">
+                <option value="ros6">RouterOS v6.xx</option>
+                <option value="ros7">RouterOS v7.xx</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex">
+            <div style="width:100%;">
+              <label>Local Target</label>
+              <select style="margin-top:5px; width:100%" id="local-list" onchange="LocalAddressOption()">
+                <option value="local-list1">IP Address List</option>
+                <option value="local-list2">In. Interface</option>
+                <option value="local-list3">In. Interface List</option>
+              </select>
+            </div>
+            <div style="width:100%;margin-left:10px;">
+              <label>Interface Target</label>
+              <input disabled type="text" id="interface-name" placeholder="LOCAL-IP (RFC1819)">
+            </div>
+          </div>
+
+          <div style="clear:both"></div>
+
+          <div style="color:#ff6600; border:1px solid #bbb; padding:7px;margin-top:0px;margin-bottom:10px">
+            Change your WAN Interface name with your Router condition.
+            You can use % like this 192.168.1.1%ether1 and 192.168.1.1%ether2 for same IP Gateway.
+            for PPPoE Client you can enter the name directly on the gateway without IP.
+          </div>
+
+          <div style="clear:both"></div>
+
+          <div style="display:flex; border-bottom:1px solid #bbb; margin-bottom:5px;">
+            <div style="width:100%;">
+              <label>WAN ISP-1</label>
+              <input type="text" id="wan1-isp" placeholder="Ex: ether1">
+            </div>
+            <div style="width:100%;margin-left:10px">
+              <label>Gateway ISP-1</label>
+              <input type="text" id="wan1-isp-ip" placeholder="Ex: 192.168.1.1">
+            </div>
+          </div>
+
+          <div style="display:flex;border-bottom:1px solid #bbb; margin-bottom:5px;">
+            <div style="width:100%;">
+              <label>WAN ISP-2</label>
+              <input type="text" id="wan2-isp" placeholder="Ex: ether2">
+            </div>
+            <div style="width:100%;margin-left:10px">
+              <label>Gateway ISP-2</label>
+              <input type="text" id="wan2-isp-ip" placeholder="Ex: 192.168.2.1">
+            </div>
+          </div>
+
+          <div style="display:flex;border-bottom:1px solid #bbb; margin-bottom:7px">
+            <div style="width:100%;">
+              <label>WAN ISP-3</label>
+              <input type="text" id="wan3-isp" placeholder="Ex: ether3" disabled>
+            </div>
+            <div style="width:100%;margin-left:10px">
+              <label>Gateway ISP-3</label>
+              <input type="text" id="wan3-isp-ip" placeholder="Ex: 192.168.3.1" disabled >
+            </div>
+          </div>
+
+          <div style="display:flex;border-bottom:1px solid #bbb; margin-bottom:5px">
+            <div style="width:100%;">
+              <label>WAN ISP-4</label>
+              <input type="text" id="wan4-isp" placeholder="Ex: ether4" disabled>
+            </div>
+            <div style="width:100%;margin-left:10px">
+              <label>Gateway ISP-4</label>
+              <input type="text" id="wan4-isp-ip" placeholder="Ex: 192.168.4.1" disabled >
+            </div>
+          </div>
+
+          <div style="display:flex;border-bottom:1px solid #bbb; margin-bottom:5px;">
+            <div style="width:100%;">
+              <label>WAN ISP-5</label>
+              <input type="text" id="wan5-isp" placeholder="Ex: ether5" disabled>
+            </div>
+            <div style="width:100%;margin-left:10px">
+              <label>Gateway ISP-5</label>
+              <input type="text" id="wan5-isp-ip" placeholder="Ex: 192.168.5.1" disabled >
+            </div>
+          </div>
+
+          <div style="display:flex;border-bottom:1px solid #bbb; margin-bottom:5px">
+            <div style="width:100%;">
+              <label>WAN ISP-6</label>
+              <input type="text" id="wan6-isp" placeholder="Ex: ether6" disabled>
+            </div>
+            <div style="width:100%;margin-left:10px;">
+              <label>Gateway ISP-6</label>
+              <input type="text" id="wan6-isp-ip" placeholder="Ex: 192.168.6.1" disabled >
+            </div>
+          </div>
+
+          <button style="margin-right:5px" type="button" onclick="myFunctionInput()">Generate</button>
+          <button type="button" onclick="location.reload()">Clear All</button>
+
+          <div id="donateNotice" style="display:none;margin-top:10px;padding:10px;background:#fff;color:#333;border:1px solid #bbb;border-radius:5px">
+            <strong>Support</strong><br>
+            If you'd like to support the project visit buananet.com or mikrotikscript.github.io.
+            <div style="margin-top:8px;text-align:right">
+              <button onclick="document.getElementById('donateNotice').style.display='none'">Close</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="content">
+          <span style="margin-left:2px; font-weight:600">Script Generator Result</span>
+          <div class="list-output-content">
+            <div id="showScript" >
+              <span style="color:#ff6600 !important;">
+              ###############################################################<br>
+              # Load Balancing Per Connection Clasifier (LB PCC) Script Generator<br>
+              # Date/Time: <span id="tanggalwaktu"></span><br>
+              # Created by: mikrotikscript.Github.io<br>
+              # Load Balancing Method -> <span id="vpn-list-text-info" style="font-weight:bold;">PCC (PER CONNECTION CLASIFIER)</span><br>
+              ###############################################################<br>
+              </span>
+              <b>/ip firewall address-list</b><br>
+              add address=192.168.0.0/16 list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br>
+              add address=172.16.0.0/12 list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br>
+              add address=10.0.0.0/8 list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br>
+              <b>/ip firewall nat</b><br>
+              <span id="wan1-nat">add chain=srcnat out-interface="<span id="wan1-nat-text"></span>" action=masquerade comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-nat">add chain=srcnat out-interface="<span id="wan2-nat-text"></span>" action=masquerade comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan3-nat" style="display:none">add chain=srcnat out-interface="<span id="wan3-nat-text"></span>" action=masquerade comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan4-nat" style="display:none">add chain=srcnat out-interface="<span id="wan4-nat-text"></span>" action=masquerade comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan5-nat" style="display:none">add chain=srcnat out-interface="<span id="wan5-nat-text"></span>" action=masquerade comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan6-nat" style="display:none">add chain=srcnat out-interface="<span id="wan6-nat-text"></span>" action=masquerade comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="show-hide-routing-table" style="display:none">
+              <b>/routing table</b> <br>
+              <span id="wan1-routing-table">add name="<span id="wan1-routing-table-name"></span>" fib comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-routing-table">add name="<span id="wan2-routing-table-name"></span>" fib comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan3-routing-table" style="display:none">add name="<span id="wan3-routing-table-name"></span>" fib comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan4-routing-table" style="display:none">add name="<span id="wan4-routing-table-name"></span>" fib comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan5-routing-table" style="display:none">add name="<span id="wan5-routing-table-name"></span>" fib comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan6-routing-table" style="display:none">add name="<span id="wan6-routing-table-name"></span>" fib comment="LB PCC by mikrotikscript.github.io"<br></span>
+              </span>
+              <b>/ip route</b><br>
+              <span id="wan1-route">add check-gateway=ping distance=1 gateway="<span id="wan1-route-text"></span>" <span id="wan1-routing-option">routing-mark</span>="<span id="wan1-route-text-r"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-route">add check-gateway=ping distance=1 gateway="<span id="wan2-route-text"></span>" <span id="wan2-routing-option">routing-mark</span>="<span id="wan2-route-text-r"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan3-route" style="display:none">add check-gateway=ping distance=1 gateway="<span id="wan3-route-text"></span>" <span id="wan3-routing-option">routing-mark</span>="<span id="wan3-route-text-r"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan4-route" style="display:none">add check-gateway=ping distance=1 gateway="<span id="wan4-route-text"></span>" <span id="wan4-routing-option">routing-mark</span>="<span id="wan4-route-text-r"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan5-route" style="display:none">add check-gateway=ping distance=1 gateway="<span id="wan5-route-text"></span>" <span id="wan5-routing-option">routing-mark</span>="<span id="wan5-route-text-r"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan6-route" style="display:none">add check-gateway=ping distance=1 gateway="<span id="wan6-route-text"></span>" <span id="wan6-routing-option">routing-mark</span>="<span id="wan6-route-text-r"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan1-route-failover">add check-gateway=ping distance=1 gateway="<span id="wan1-route-failover-text"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-route-failover">add check-gateway=ping distance=2 gateway="<span id="wan2-route-failover-text"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan3-route-failover" style="display:none">add check-gateway=ping distance=3 gateway="<span id="wan3-route-failover-text"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan4-route-failover" style="display:none">add check-gateway=ping distance=4 gateway="<span id="wan4-route-failover-text"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan5-route-failover" style="display:none">add check-gateway=ping distance=5 gateway="<span id="wan5-route-failover-text"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan6-route-failover" style="display:none">add check-gateway=ping distance=6 gateway="<span id="wan6-route-failover-text"></span>" comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <b>/ip firewall mangle</b><br>
+              add action=accept chain=prerouting dst-address-list=LOCAL-IP src-address-list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br>
+              add action=accept chain=postrouting dst-address-list=LOCAL-IP src-address-list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br>
+              add action=accept chain=forward dst-address-list=LOCAL-IP src-address-list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br>
+              add action=accept chain=input dst-address-list=LOCAL-IP src-address-list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br>
+              add action=accept chain=output dst-address-list=LOCAL-IP src-address-list=LOCAL-IP comment="LB PCC by mikrotikscript.github.io"<br> 	  
+              <span id="wan1-mangle-input">add action=mark-connection chain=input in-interface="<span id="wan1-mangle-input-text"></span>" new-connection-mark="<span id="wan1-mangle-input-text-r"></span>" passthrough=yes comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-mangle-input">add action=mark-connection chain=input in-interface="<span id="wan2-mangle-input-text"></span>" new-connection-mark="<span id="wan2-mangle-input-text-r"></span>" passthrough=yes comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan1-mangle-output">add action=mark-routing chain=output connection-mark="<span id="wan1-mangle-output-text"></span>" new-routing-mark="<span id="wan1-mangle-output-text-r"></span>" passthrough=yes comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-mangle-output">add action=mark-routing chain=output connection-mark="<span id="wan2-mangle-output-text"></span>" new-routing-mark="<span id="wan2-mangle-output-text-r"></span>" passthrough=yes comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan1-mangle-pcc">add action=mark-connection chain=prerouting dst-address-type=!local new-connection-mark="<span id="wan1-mangle-pcc-text"></span>" passthrough=yes per-connection-classifier=both-addresses-and-ports:<span id="wan1-mangle-pcc-both"><span style='color:#ff6600; font-weight:bold'>2/0</span></span> <span id="local-network1">dst-address-list=!LOCAL-IP src-address-list=LOCAL-IP</span> comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-mangle-pcc">add action=mark-connection chain=prerouting dst-address-type=!local  new-connection-mark="<span id="wan2-mangle-pcc-text"></span>" passthrough=yes per-connection-classifier=both-addresses-and-ports:<span id="wan2-mangle-pcc-both"><span style='color:#ff6600; font-weight:bold'>2/1</span></span> <span id="local-network2">dst-address-list=!LOCAL-IP src-address-list=LOCAL-IP</span> comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan1-mangle-pre">add action=mark-routing chain=prerouting connection-mark="<span id="wan1-mangle-pre-text"></span>" new-routing-mark="<span id="wan1-mangle-pre-text-r"></span>" passthrough=yes <span id="local-network7">dst-address-list=!LOCAL-IP src-address-list=LOCAL-IP</span> comment="LB PCC by mikrotikscript.github.io"<br></span>
+              <span id="wan2-mangle-pre">add action=mark-routing chain=prerouting connection-mark="<span id="wan2-mangle-pre-text"></span>" new-routing-mark="<span id="wan2-mangle-pre-text-r"></span>" passthrough=yes <span id="local-network8">dst-address-list=!LOCAL-IP src-address-list=LOCAL-IP</span> comment="LB PCC by mikrotikscript.github.io"<br></span>
+            </div>
+          </div>
+
+          <br>
+          <button style="margin-top:-5px" id="copyscript" type="button" onclick="selectElementContents(document.getElementById('showScript'))">Copy Script</button>
+          <span style="padding:7px; font-weight:600;margin-left:10px;font-size:14px">Copy-Paste to Terminal.</span>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span style="color:#ff6600"><b># This script for remover all script from this Generator</b></span><br>
+        /ip firewall nat remove [find comment="LB PCC by mikrotikscript.github.io"]<br>
+        /ip route remove [find comment="LB PCC by mikrotikscript.github.io"]<br>
+        /ip firewall mangle remove [find comment="LB PCC by mikrotikscript.github.io"]<br>
+        /ip firewall address-list remove [find comment="LB PCC by mikrotikscript.github.io"]<br> 
+        /routing table remove [find comment="LB PCC by mikrotikscript.github.io"]
+        <div style="margin-top:15px; padding-top:10px; border-top: 1px solid #555; width:100%">
+          © Copyright 2020-<span id="year">2025</span> <a target="_blank" href="#">mikrotikscript.github.io</a> is proudly powered by <a target="_blank" href="https://pages.github.com/">GitHub Pages</a>
+        </div>
+        <div style="margin-top:1px; color:#888; font-size:11px">
+          Project by <a target="_blank" href="#">Mikrotik Script</a> site <a target="_blank" href="$">Mikrotik Script</a> WesT Java, INDONESIA
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* --- Helper: copy / select content --- */
+      function selectElementContents(el) {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        try {
+          document.execCommand('copy');
+          alert('Script copied to clipboard. Paste into your terminal.');
+        } catch (e) {
+          alert('Copy failed — please select and copy manually.');
+        }
+        sel.removeAllRanges();
+      }
+
+      /* --- small date/time filler --- */
+      (function setDateTime(){
+        var now = new Date();
+        var y = now.getFullYear(), m = String(now.getMonth()+1).padStart(2,'0'), d = String(now.getDate()).padStart(2,'0');
+        var hh = String(now.getHours()).padStart(2,'0'), mm = String(now.getMinutes()).padStart(2,'0');
+        document.getElementById('tanggalwaktu').innerText = y+'-'+m+'-'+d+' '+hh+':'+mm;
+        document.getElementById('year').innerText = y;
+      })();
+
+      /* --- Main generator logic (adapted minimal behavior) --- */
+      function myFunctionOuput(){
+        // show/hide WAN inputs based on selected number of lines
+        var lines = document.getElementById('wan-list').value;
+        var win = { line2:2, line3:3, line4:4, line5:5, line6:6 }[lines] || 2;
+        // Set visibility for fields 3..6
+        for(var i=3;i<=6;i++){
+          var en = i <= win;
+          document.getElementById('wan'+i+'-isp').disabled = !en;
+          document.getElementById('wan'+i+'-isp-ip').disabled = !en;
+          // also show/hide script placeholders
+          var nat = document.getElementById('wan'+i+'-nat');
+          if(nat) nat.style.display = en ? 'inline' : 'none';
+          var route = document.getElementById('wan'+i+'-route');
+          if(route) route.style.display = en ? 'inline' : 'none';
+          var manglep = document.getElementById('wan'+i+'-mangle-pcc');
+          if(manglep) manglep.style.display = en ? 'inline' : 'none';
+        }
+      }
+
+      function LocalAddressOption(){
+        var v = document.getElementById('local-list').value;
+        var iface = document.getElementById('interface-name');
+        if(v === 'local-list2' || v === 'local-list3'){
+          iface.disabled = false;
+          iface.placeholder = 'enter interface name (eg: ether2)';
+        } else {
+          iface.disabled = true;
+          iface.placeholder = 'LOCAL-IP (RFC1819)';
+        }
+      }
+
+      function myFunctionInput(){
+        // gather inputs and populate placeholders for the script area
+        var wanCount = (function(){
+          var lines = document.getElementById('wan-list').value;
+          return { line2:2, line3:3, line4:4, line5:5, line6:6 }[lines] || 2;
+        })();
+
+        var ros = document.getElementById('ros-list').value;
+        document.getElementById('vpn-list-text-info').innerText = (ros === 'ros7') ? 'PCC (for RouterOS v7)' : 'PCC (for RouterOS v6)';
+        // fill WAN text placeholders
+        for(var i=1;i<=6;i++){
+          var iface = document.getElementById('wan'+i+'-isp').value || '';
+          var gw = document.getElementById('wan'+i+'-isp-ip').value || '';
+          // NAT label
+          var natText = document.getElementById('wan'+i+'-nat-text');
+          if(natText) natText.innerText = iface || ('ether'+i);
+          // route text
+          var routeText = document.getElementById('wan'+i+'-route-text');
+          if(routeText) routeText.innerText = gw || '';
+          // mangle text placeholders
+          var mangleIn = document.getElementById('wan'+i+'-mangle-input-text');
+          if(mangleIn) mangleIn.innerText = iface || '';
+          var mangleInr = document.getElementById('wan'+i+'-mangle-input-text-r');
+          if(mangleInr) mangleInr.innerText = 'CONN-WAN'+i;
+          var mangleOut = document.getElementById('wan'+i+'-mangle-output-text');
+          if(mangleOut) mangleOut.innerText = 'CONN-WAN'+i;
+          var mangleOutR = document.getElementById('wan'+i+'-mangle-output-text-r');
+          if(mangleOutR) mangleOutR.innerText = 'ROUTE-WAN'+i;
+          var manglePCC = document.getElementById('wan'+i+'-mangle-pcc-text');
+          if(manglePCC) manglePCC.innerText = 'CONN-PCC-WAN'+i;
+          // routing-table name
+          var rtname = document.getElementById('wan'+i+'-routing-table-name');
+          if(rtname) rtname.innerText = 'WAN'+i+'-TABLE';
+          // route failover text (for display)
+          var rf = document.getElementById('wan'+i+'-route-failover-text');
+          if(rf) rf.innerText = gw || '';
+          // routing mark text
+          var rt = document.getElementById('wan'+i+'-route-text-r');
+          if(rt) rt.innerText = 'ROUTE-WAN'+i;
+        }
+
+        // show/hide according to count
+        myFunctionOuput();
+
+        // optionally inform user
+        alert('Script updated in the result panel. Use "Copy Script" to copy it.');
+      }
+
+      /* initialize */
+      myFunctionOuput();
+      LocalAddressOption();
+
+    </script>
+  </body>
+</html>
