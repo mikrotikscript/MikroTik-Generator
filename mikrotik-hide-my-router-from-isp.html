@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MikroTik Ninja — Hide Router Info from ISP (Clean)</title>
+  <meta name="description" content="MikroTik Ninja — Hide Router Info from ISP, full features unlocked (no login)." />
+  <link rel="shortcut icon" href="https://buananetpbun.github.io/favicon.ico" type="image/x-icon">
+
+  <style>
+    :root{
+      --bg:#111;
+      --panel:#1e1e1e;
+      --accent:#ff6600;
+      --muted:#999;
+      --card:#222;
+      --card-2:#2b2b2b;
+      --text:#eee;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#0b0b0b 0%, #171717 100%);font-family:Inter,Arial,Helvetica,sans-serif;color:var(--text)}
+    .container{max-width:1100px;margin:26px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:42px;height:42px;border-radius:6px}
+    .brand h1{font-size:18px;margin:0;color:var(--accent)}
+    nav a{color:var(--muted);text-decoration:none;margin-left:12px;font-size:14px}
+    .grid{display:grid;grid-template-columns:380px 1fr;gap:18px}
+    @media (max-width:920px){.grid{grid-template-columns:1fr}}
+    .panel{background:linear-gradient(180deg,var(--card),var(--card-2));padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    label{font-weight:600;color:var(--text);display:block;margin-bottom:6px}
+    input[type=text], .small{width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
+    .small[disabled]{opacity:.7}
+    .row{display:flex;gap:10px}
+    .row > *{flex:1}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    button.btn{background:var(--accent);border:none;color:#111;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:700}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:7px 10px;border-radius:6px;cursor:pointer}
+    .checkbox-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+    .checkbox-grid label{font-weight:500;color:var(--text);display:flex;align-items:center;gap:8px}
+    .output{white-space:pre-wrap;font-family: monospace;background:#070707;color:#cdebd6;padding:12px;border-radius:6px;min-height:200px;overflow:auto;border:1px solid rgba(255,255,255,0.02)}
+    .small-note{font-size:13px;color:var(--muted);margin-top:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <img src="./img/mylogo.png" alt="logo" onerror="this.style.display='none'">
+        <div>
+          <h1>MIKROTIK NINJA — Hide Info from ISP</h1>
+          <div style="font-size:12px;color:var(--muted)">All features unlocked — no login, no subscribe</div>
+        </div>
+      </div>
+      <nav>
+        <a href="https://buananetpbun.github.io" target="_blank">HOME</a>
+        <a href="https://github.com/buananetpbun" target="_blank">GITHUB</a>
+        <a href="https://fb.me/buananet.pbun" target="_blank">CONTACT</a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <!-- left panel: inputs -->
+      <section class="panel">
+        <label for="input-interface">Interface (ether) to ISP</label>
+        <input id="input-interface" class="small" type="text" placeholder="e.g. ether1">
+
+        <div style="height:10px"></div>
+
+        <label for="input-identity">Change Router Identity</label>
+        <input id="input-identity" class="small" type="text" placeholder="e.g. My Desktop PC">
+
+        <div style="height:10px"></div>
+
+        <label for="input-mac-address">Change Router MAC Address</label>
+        <div class="row">
+          <input id="input-mac-address" class="small" type="text" placeholder="e.g. 52:E2:4F:28:8B:9F" onkeypress="return event.charCode != 32">
+          <button class="ghost" type="button" onclick="genMAC()">Random</button>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <label>More Hidden Protections from Internet (WAN) Scanning</label>
+        <div class="small-note">Tick the protections you want to enable. Use with care — some blocks may prevent remote admin access.</div>
+
+        <div class="checkbox-grid" style="margin-top:10px">
+          <label><input type="checkbox" id="opt-auto-mac"> Auto Random MAC Address</label>
+          <label><input type="checkbox" id="opt-winbox"> Block Winbox Scan</label>
+          <label><input type="checkbox" id="opt-discovery"> Block Neighbor Discovery</label>
+          <label><input type="checkbox" id="opt-mac-server"> Block MAC Server / MAC-Winbox</label>
+          <label><input type="checkbox" id="opt-traceroute"> Block Traceroute (33434-33534)</label>
+          <label><input type="checkbox" id="opt-romon"> Block RoMON</label>
+          <label><input type="checkbox" id="opt-dns"> Block Open DNS (port 53)</label>
+          <label><input type="checkbox" id="opt-proxy"> Block Open PROXY (3128,8080)</label>
+          <label><input type="checkbox" id="opt-btest"> Block BTest Server</label>
+          <label><input type="checkbox" id="opt-snmp"> Block SNMP (161/162)</label>
+          <label><input type="checkbox" id="opt-thedude"> Block The Dude (2210/2211)</label>
+          <label><input type="checkbox" id="opt-ipcloud"> Block IP Cloud / DDNS</label>
+          <label><input type="checkbox" id="opt-ssdp"> Block SSDP / UPnP</label>
+          <label><input type="checkbox" id="opt-socks"> Block SOCKS Proxy</label>
+          <label><input type="checkbox" id="opt-ping"> Block Ping (ICMP echo)</label>
+          <label><input type="checkbox" id="opt-logport"> Log Port Scanner (adds rule to log then drop)</label>
+          <label><input type="checkbox" id="opt-maskttl"> Mask TTL (set TTL to 65)</label>
+          <label><input type="checkbox" id="opt-dropbogon"> Drop Bogon IPs</label>
+          <label><input type="checkbox" id="opt-disable-all-ip"> Disable All IP Services (disable api, ftp, www, ssh if checked)</label>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="btn-generate" type="button">Generate</button>
+          <button class="ghost" id="btn-copy" type="button" onclick="selectElementContents(document.getElementById('output'))">Copy Script</button>
+          <button class="ghost" id="btn-download" type="button" onclick="downloadScript()">Download .rsc</button>
+          <button class="ghost" onclick="resetForm()" title="Clear all fields">Reset</button>
+        </div>
+
+        <div class="small-note" style="margin-top:12px">Generated script is shown on the right. Copy & paste into RouterOS terminal or use the download option to save a .rsc file.</div>
+      </section>
+
+      <!-- right panel: output -->
+      <section class="panel">
+        <label>Generated Script</label>
+        <div id="output" class="output">
+          ################################################################
+          # MIKROTIK NINJA : HIDE ROUTERBOARD INFO FROM ISP / WAN SCANNING
+          # Created By: BuanaNETPBun (clean version)
+          ################################################################
+          (click Generate to create the script)
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © 2025 buananetpbun.github.io — Ready to upload (no Firebase / no login)
+    </footer>
+  </div>
+
+  <script>
+    // Helper: select & copy content of element
+    function selectElementContents(el) {
+      if(!el) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      try {
+        document.execCommand('copy');
+        alert('Script copied to clipboard. Paste into your terminal.');
+      } catch(e) {
+        alert('Copy failed — please select and copy manually.');
+      }
+      sel.removeAllRanges();
+    }
+
+    // Random MAC generator (locally administered)
+    function genMAC(){
+      // generate a locally administered unicast MAC: set second-least-significant bit of first octet to 1 (02)
+      function hexByte() { return ('0' + Math.floor(Math.random()*256).toString(16)).slice(-2).toUpperCase(); }
+      const first = '02'; // locally administered, unicast
+      const mac = [first, hexByte(), hexByte(), hexByte(), hexByte(), hexByte()].join(':');
+      document.getElementById('input-mac-address').value = mac;
+    }
+
+    // Produce script based on options
+    function generateScript(){
+      const iface = document.getElementById('input-interface').value.trim();
+      const identity = document.getElementById('input-identity').value.trim();
+      const mac = document.getElementById('input-mac-address').value.trim();
+
+      // collect options
+      const opts = {
+        autoMac: document.getElementById('opt-auto-mac').checked,
+        winbox: document.getElementById('opt-winbox').checked,
+        discovery: document.getElementById('opt-discovery').checked,
+        macServer: document.getElementById('opt-mac-server').checked,
+        traceroute: document.getElementById('opt-traceroute').checked,
+        romon: document.getElementById('opt-romon').checked,
+        dns: document.getElementById('opt-dns').checked,
+        proxy: document.getElementById('opt-proxy').checked,
+        btest: document.getElementById('opt-btest').checked,
+        snmp: document.getElementById('opt-snmp').checked,
+        thedude: document.getElementById('opt-thedude').checked,
+        ipcloud: document.getElementById('opt-ipcloud').checked,
+        ssdp: document.getElementById('opt-ssdp').checked,
+        socks: document.getElementById('opt-socks').checked,
+        ping: document.getElementById('opt-ping').checked,
+        logport: document.getElementById('opt-logport').checked,
+        maskttl: document.getElementById('opt-maskttl').checked,
+        dropbogon: document.getElementById('opt-dropbogon').checked,
+        disableAllIP: document.getElementById('opt-disable-all-ip').checked
+      };
+
+      // basic validation
+      if(!iface){
+        if(!confirm('You did not specify an interface. Continue and generate script without in-interface restriction?')) {
+          return;
+        }
+      }
+
+      const lines = [];
+      lines.push('################################################################');
+      lines.push('# MIKROTIK NINJA : HIDE ROUTERBOARD INFO FROM ISP / WAN SCANNING');
+      lines.push('# Generated (clean) - buananetpbun.github.io');
+      lines.push('################################################################');
+      lines.push('');
+
+      // Interface list for protection
+      if(iface){
+        lines.push(`/interface list add name=WAN-PROTECT comment="MikroTik Ninja by buananetpbun.github.io"`);
+        lines.push(`/interface list member add interface="${iface}" list=WAN-PROTECT comment="MikroTik Ninja by buananetpbun.github.io"`);
+      } else {
+        lines.push(`# NOTE: No interface specified. Rules will not have in-interface-list restrictions.`);
+      }
+      lines.push('');
+
+      // Winbox
+      if(opts.winbox){
+        lines.push('## Block Winbox Scan (tcp/udp 8291 and common admin ports)');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=tcp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=udp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan UDP - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input protocol=tcp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input protocol=udp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan UDP - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // Neighbor discovery
+      if(opts.discovery){
+        lines.push('## Block Neighbor Discovery (LLDP/neighbor discovery ports)');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=5678 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=5678 protocol=udp');
+          lines.push('/ip neighbor discovery-settings set discover-interface-list=!WAN-PROTECT');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" dst-port=5678 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" dst-port=5678 protocol=udp');
+        }
+        lines.push('');
+      }
+
+      // MAC server / mac-winbox
+      if(opts.macServer){
+        lines.push('## Block MAC Server / MAC-Winbox');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=20561 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=20561 protocol=udp');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" dst-port=20561 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" dst-port=20561 protocol=udp');
+        }
+        lines.push('/tool mac-server mac-winbox set allowed-interface-list=none');
+        lines.push('/tool mac-server set allowed-interface-list=none');
+        lines.push('/tool mac-server ping set enabled=no');
+        lines.push('');
+      }
+
+      // Traceroute
+      if(opts.traceroute){
+        lines.push('## Block Traceroute (ports 33434-33534)');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=33434-33534 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=33434-33534 protocol=udp');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" dst-port=33434-33534 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" dst-port=33434-33534 protocol=udp');
+        }
+        lines.push('');
+      }
+
+      // RoMON
+      if(opts.romon){
+        lines.push('## Block RoMON');
+        if(iface){
+          lines.push(`/tool romon port add disabled=no forbid=yes comment="Block RoMON - by buananetpbun.github.io" interface="${iface}"`);
+        } else {
+          lines.push('/tool romon set enabled=no comment="Block RoMON - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // DNS
+      if(opts.dns){
+        lines.push('## Block Open Recursive DNS (port 53)');
+        if(iface){
+          lines.push('/ip firewall filter add chain=input dst-port=53 in-interface-list=WAN-PROTECT protocol=tcp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add chain=input dst-port=53 in-interface-list=WAN-PROTECT protocol=udp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add chain=input dst-port=53 protocol=tcp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add chain=input dst-port=53 protocol=udp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // Proxy
+      if(opts.proxy){
+        lines.push('## Block Open PROXY (3128,8080)');
+        lines.push('/ip proxy set enabled=no');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 in-interface-list=WAN-PROTECT protocol=tcp comment="Block Open PROXY - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 in-interface-list=WAN-PROTECT protocol=udp comment="Block Open PROXY - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 protocol=tcp comment="Block Open PROXY - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 protocol=udp comment="Block Open PROXY - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // BTest
+      if(opts.btest){
+        lines.push('## Block BTest Server');
+        lines.push('/tool bandwidth-server set enabled=no authenticate=yes');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 in-interface-list=WAN-PROTECT protocol=tcp comment="Block BTest Server - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 in-interface-list=WAN-PROTECT protocol=udp comment="Block BTest Server - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 protocol=tcp comment="Block BTest Server - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 protocol=udp comment="Block BTest Server - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // SNMP
+      if(opts.snmp){
+        lines.push('## Block SNMP');
+        lines.push('/snmp set enabled=no');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 in-interface-list=WAN-PROTECT protocol=tcp comment="Block SNMP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 in-interface-list=WAN-PROTECT protocol=udp comment="Block SNMP - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 protocol=tcp comment="Block SNMP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 protocol=udp comment="Block SNMP - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // TheDude
+      if(opts.thedude){
+        lines.push('## Block The Dude server ports');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 in-interface-list=WAN-PROTECT protocol=tcp comment="Block The Dude - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 in-interface-list=WAN-PROTECT protocol=udp comment="Block The Dude - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 protocol=tcp comment="Block The Dude - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 protocol=udp comment="Block The Dude - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // IP Cloud / DDNS
+      if(opts.ipcloud){
+        lines.push('## Disable IP Cloud / DDNS');
+        lines.push('/ip cloud set ddns-enabled=no');
+        lines.push('/ip cloud advanced set use-local-address=no');
+        lines.push('/ip cloud set update-time=no');
+        lines.push('');
+      }
+
+      // SSDP / UPnP
+      if(opts.ssdp){
+        lines.push('## Block SSDP / UPnP (1900)');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1900 in-interface-list=WAN-PROTECT protocol=udp comment="Block SSDP/UPnP - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1900 protocol=udp comment="Block SSDP/UPnP - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // SOCKS
+      if(opts.socks){
+        lines.push('## Block SOCKS Proxy (1080)');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1080 in-interface-list=WAN-PROTECT protocol=tcp comment="Block SOCKS Proxy - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1080 protocol=tcp comment="Block SOCKS Proxy - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // Ping (ICMP)
+      if(opts.ping){
+        lines.push('## Block Ping (ICMP echo)');
+        if(iface){
+          lines.push('/ip firewall filter add action=drop chain=input protocol=icmp in-interface-list=WAN-PROTECT comment="Block Ping (ICMP Echo) - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=drop chain=input protocol=icmp comment="Block Ping (ICMP Echo) - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // Log Port Scanner
+      if(opts.logport){
+        lines.push('## Log Port Scanner then drop');
+        if(iface){
+          lines.push('/ip firewall filter add action=log chain=input in-interface-list=WAN-PROTECT protocol=tcp log-prefix="PORT-SCAN" comment="Log Port Scanner - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=tcp comment="Drop after log - by buananetpbun.github.io"');
+        } else {
+          lines.push('/ip firewall filter add action=log chain=input protocol=tcp log-prefix="PORT-SCAN" comment="Log Port Scanner - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input protocol=tcp comment="Drop after log - by buananetpbun.github.io"');
+        }
+        lines.push('');
+      }
+
+      // Mask TTL
+      if(opts.maskttl){
+        lines.push('## Mask TTL (set TTL to 65)');
+        lines.push('/ip firewall mangle add chain=prerouting action=change-ttl new-ttl=65 passthrough=yes comment="Mask TTL - by buananetpbun.github.io"');
+        lines.push('');
+      }
+
+      // Drop bogon
+      if(opts.dropbogon){
+        lines.push('## Drop Bogon IPs (example, add your bogon ranges as needed)');
+        lines.push('# Example: /ip firewall address-list add list=BOGONS address=127.0.0.0/8');
+        lines.push('# /ip firewall filter add chain=input src-address-list=BOGONS action=drop comment="Drop Bogon - by buananetpbun.github.io"');
+        lines.push('');
+      }
+
+      // Disable all IP services
+      if(opts.disableAllIP){
+        lines.push('## Disable common IP services (use with care!)');
+        lines.push('/ip service set www disabled=yes');
+        lines.push('/ip service set www-ssl disabled=yes');
+        lines.push('/ip service set api disabled=yes');
+        lines.push('/ip service set api-ssl disabled=yes');
+        lines.push('/ip service set ftp disabled=yes');
+        lines.push('/ip service set telnet disabled=yes');
+        lines.push('/ip service set ssh disabled=yes');
+        lines.push('');
+      }
+
+      // Auto Random MAC
+      if(opts.autoMac){
+        lines.push('## Auto Random MAC: set MAC when interface is found (script snippet)');
+        if(iface){
+          lines.push(`/interface ethernet set "${iface}" mac-address=${mac || 'GENERATED_MAC_PLACEHOLDER'}`);
+        } else {
+          lines.push('# No interface specified: manual MAC change required');
+        }
+        lines.push('');
+      }
+
+      // Change identity & MAC
+      if(identity){
+        lines.push(`## Change router identity`);
+        lines.push(`/system identity set name="${escapeForRO(identity)}"`);
+        lines.push('');
+      }
+      if(mac){
+        if(iface){
+          lines.push('## Change MAC Interface');
+          lines.push(`/interface ethernet set "${iface}" mac-address="${mac}"`);
+          lines.push('');
+        } else {
+          lines.push('# MAC provided but interface not specified. Please set interface to apply MAC change.');
+          lines.push('');
+        }
+      }
+
+      // Final note
+      lines.push('# End of generated script.');
+      lines.push('# Review the rules before applying to avoid locking yourself out.');
+      lines.push('');
+
+      const script = lines.join('\n');
+      document.getElementById('output').textContent = script;
+
+      // Save last generated script in memory (for download)
+      window._lastGeneratedScriptText = script;
+    }
+
+    // helper to escape quotes for RouterOS
+    function escapeForRO(s){
+      return String(s).replace(/"/g, '\\"');
+    }
+
+    // download .rsc
+    function downloadScript(){
+      const txt = window._lastGeneratedScriptText || document.getElementById('output').textContent;
+      if(!txt || txt.trim().length === 0){
+        alert('Nothing to download. Please click Generate first.');
+        return;
+      }
+      const filename = 'mikrotik-hide-router-ninja.rsc';
+      const blob = new Blob([txt], {type: 'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function resetForm(){
+      if(!confirm('Reset all fields and options?')) return;
+      document.getElementById('input-interface').value = '';
+      document.getElementById('input-identity').value = '';
+      document.getElementById('input-mac-address').value = '';
+      const boxes = document.querySelectorAll('.checkbox-grid input[type=checkbox]');
+      boxes.forEach(cb => cb.checked = false);
+      document.getElementById('output').textContent = '################################################################\\n# MIKROTIK NINJA : HIDE ROUTERBOARD INFO FROM ISP / WAN SCANNING\\n# Created By: BuanaNETPBun (clean version)\\n################################################################\\n(click Generate to create the script)';
+      window._lastGeneratedScriptText = null;
+    }
+
+    // bind events
+    document.getElementById('btn-generate').addEventListener('click', generateScript);
+    // initialize with default — enable many options by default for convenience
+    (function initDefaults(){
+      // optional: enable some commonly used protections by default
+      document.getElementById('opt-winbox').checked = true;
+      document.getElementById('opt-discovery').checked = true;
+      document.getElementById('opt-mac-server').checked = true;
+      document.getElementById('opt-ping').checked = true;
+      document.getElementById('opt-dns').checked = false;
+      // clear last script
+      window._lastGeneratedScriptText = null;
+    })();
+  </script>
+</body>
+</html>
