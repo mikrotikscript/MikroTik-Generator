@@ -3,24 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mikrotik RouterOS Auto Backup to E-Mail — Mukidi Story</title>
-  <meta name="description" content="Mikrotik RouterOS Auto Backup to E-Mail Generator — clean, no Firebase/login">
-  <link rel="shortcut icon" href="https://mikrotikscript.github.io/favicon.ico" type="image/x-icon">
+  <title>Mikrotik Auto Backup to E-Mail Generator — Mukidi</title>
+  <meta name="description" content="Generator script otomatis backup Mikrotik ke email — Mukidi version tanpa Firebase/login.">
+  <link rel="icon" href="https://mikrotikscript.github.io/favicon.ico" type="image/x-icon">
   <style>
-    /* Simple clean styling */
-    body{font-family:Inter,Arial,Helvetica,sans-serif;background:#171717;color:#eee;margin:0;padding:20px}
+    body{font-family:Arial,Helvetica,sans-serif;background:#171717;color:#eee;margin:0;padding:20px}
     .wrap{max-width:1000px;margin:0 auto}
     header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
     header h1{color:#ff6600;margin:0;font-size:20px}
     nav a{color:#aaa;margin-left:12px;text-decoration:none}
     .grid{display:flex;gap:18px}
     @media(max-width:900px){.grid{flex-direction:column}}
-    .panel{background:#222;padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);flex:1}
-    label{display:block;font-weight:700;margin-bottom:6px;color:#ddd}
-    input[type=text],select{width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff;margin-bottom:10px}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .panel{background:#222;padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);flex:1}
+    label{display:block;font-weight:700;margin-top:8px;color:#ddd}
+    input,select{width:100%;padding:8px;margin-top:4px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
     button{background:#ff6600;border:none;color:#111;padding:8px 12px;border-radius:6px;font-weight:700;cursor:pointer}
-    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.05);color:#ddd}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.2);color:#ddd}
     .output{background:#050505;border:1px solid #222;padding:12px;border-radius:6px;min-height:260px;white-space:pre-wrap;font-family:monospace;color:#cdebd6;overflow:auto}
     .note{font-size:13px;color:#aaa;margin-top:8px}
   </style>
@@ -28,46 +27,126 @@
 <body>
   <div class="wrap">
     <header>
-      <div>
-        <h1>Mikrotik — Auto Backup to E-Mail (Clean)</h1>
-        <div class="note">Semua akses Firebase &amp; login/subcribe telah dihapus. Siap pakai.</div>
-      </div>
-      <nav>
+      <h1>✅ Mikrotik Auto Backup to E-Mail Generator (Mukidi)</h1>
+	  <nav>
         <a href="https://mikrotikscript.github.io/MikroTik-Generator/" target="_blank">HOME</a>
-        <a href="#" target="_blank">GITHUB</a>
-        <a href="#" target="_blank">CONTACT</a>
+        <a href="https://github.com/mikrotikscript" target="_blank">GITHUB</a>
+        <a href="https://www.facebook.com/irfann.jt/" target="_blank">CONTACT</a>
       </nav>
     </header>
 
     <main class="grid">
-      <!-- left -->
+      <!-- Input -->
       <section class="panel" style="max-width:380px">
-        <label for="mail-server">E-Mail Server (IP atau hostname)</label>
-        <input id="mail-server" type="text" value="74.125.200.109" placeholder="74.125.200.109">
+        <label> Email Server</label>
+        <input id="mail-server" type="text" value="smtp.gmail.com">
 
-        <div style="display:flex;gap:10px">
-          <div style="flex:1">
-            <label for="mail-port">E-Mail Port</label>
-            <input id="mail-port" type="text" value="587" placeholder="587">
-          </div>
-          <div style="flex:1">
-            <label for="ros-version">RouterOS Version</label>
-            <select id="ros-version">
-              <option value="ROS6">RouterOS v6.xx</option>
-              <option value="ROS7">RouterOS v7.xx</option>
-            </select>
-          </div>
+        <label> Email Port</label>
+        <input id="mail-port" type="text" value="587">
+
+        <label> Email User</label>
+        <input id="mail-user" type="text" placeholder="user@gmail.com">
+
+        <label> Email Password</label>
+        <input id="mail-pass" type="text" placeholder="password">
+
+        <label> Backup File Option</label>
+        <select id="backup-opt">
+          <option value="backup"> Full Backup Files (.backup)</option>
+          <option value="export"> Export Config (.rsc)</option>
+        </select>
+
+        <label> Kirim Backup ke Email</label>
+        <input id="send-to" type="text" placeholder="your@mail.com">
+
+        <label> Deskripsi Router / Judul Email</label>
+        <input id="mail-title" type="text" value="Backup From My Router">
+
+        <label> Scheduler (hari)</label>
+        <input id="schedule" type="text" value="7">
+
+        <div class="controls">
+          <button id="btn-generate"> Generate</button>
+          <button class="ghost" onclick="copyOutput()"> Copy Script</button>
+          <button class="ghost" onclick="downloadRSC()"> Download .rsc</button>
+          <button class="ghost" onclick="clearAll()"> Clear All</button>
         </div>
+      </section>
 
-        <label for="mail-user">E-Mail User</label>
-        <input id="mail-user" type="text" value="backup.mikrotik.ros@gmail.com" placeholder="your-smtp-user@example.com">
+      <!-- Output -->
+      <section class="panel">
+        <label>✅ Generated Script</label>
+        <div id="output" class="output">
+################################################################
+# Mikrotik Auto Backup to E-Mail Script Generator (Mukidi version)
+# Created by mikrotikscript.github.io
+################################################################
+📌 Klik tombol Generate untuk membuat script.
+        </div>
+      </section>
+    </main>
 
-        <label for="mail-pass">E-Mail Password / App Password</label>
-        <input id="mail-pass" type="text" value="wvewfprmnymfepdx" placeholder="app-password-or-pass">
+    <footer style="margin-top:14px;color:#aaa;font-size:13px">
+      © 2025 mikrotikscript.github.io — Mukidi version
+    </footer>
+  </div>
 
-        <label for="file-option">Backup File Option</label>
-        <select id="file-option">
-          <option value="allbackup">Full Backup (.backup)</option>
-          <option value="allrsc">Full Export (.rsc)</option>
-          <option value="queuesimple">Queue Simple (.rsc)</option>
-          <option value="
+  <script>
+    function generate(){
+      const srv=document.getElementById('mail-server').value;
+      const port=document.getElementById('mail-port').value;
+      const user=document.getElementById('mail-user').value;
+      const pass=document.getElementById('mail-pass').value;
+      const opt=document.getElementById('backup-opt').value;
+      const send=document.getElementById('send-to').value;
+      const title=document.getElementById('mail-title').value;
+      const sched=document.getElementById('schedule').value;
+
+      const lines=[];
+      lines.push('################################################################');
+      lines.push('# Mikrotik Auto Backup to E-Mail Script');
+      lines.push('# Generated by mikrotikscript.github.io');
+      lines.push('################################################################\\n');
+
+      lines.push(`/tool e-mail set address=${srv} port=${port} from="${user}" user="${user}" password="${pass}" start-tls=yes`);
+      lines.push(`/system scheduler add name="auto-backup" interval=${sched}d on-event="/system backup save name=auto-backup; /tool e-mail send to=\\"${send}\\" subject=\\"${title}\\" file=auto-backup.${opt}" comment="Backup to email every ${sched} days"`);
+
+      document.getElementById('output').textContent=lines.join('\\n');
+      window._lastGen=lines.join('\\n');
+    }
+
+    function copyOutput(){
+      const txt=window._lastGen||document.getElementById('output').textContent;
+      if(!txt.trim()){alert('Belum ada script. Klik Generate dulu.');return;}
+      navigator.clipboard.writeText(txt).then(()=>alert('Script disalin ke clipboard.'));
+    }
+
+    function downloadRSC(){
+      const txt=window._lastGen||document.getElementById('output').textContent;
+      if(!txt.trim()){alert('Belum ada script. Klik Generate dulu.');return;}
+      const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='mikrotik-backup-to-mail.rsc';
+      document.body.appendChild(a);
+      a.click();a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function clearAll(){
+      document.getElementById('mail-server').value='smtp.gmail.com';
+      document.getElementById('mail-port').value='587';
+      document.getElementById('mail-user').value='';
+      document.getElementById('mail-pass').value='';
+      document.getElementById('backup-opt').value='backup';
+      document.getElementById('send-to').value='';
+      document.getElementById('mail-title').value='Backup From My Router';
+      document.getElementById('schedule').value='7';
+      document.getElementById('output').textContent='################################################################\\n# Mikrotik Auto Backup to E-Mail Script Generator (Mukidi version)\\n# Created by mikrotikscript.github.io\\n################################################################\\nKlik tombol Generate untuk membuat script.';
+      window._lastGen=null;
+    }
+
+    document.getElementById('btn-generate').addEventListener('click',generate);
+  </script>
+</body>
+</html>
