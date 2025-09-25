@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>MIKROTIK BGP SCRIPT GENERATOR</title>
+    <meta name="description" content="MikroTik BGP (iBGP/eBGP) Script Generator is a tool to automatically create BGP configurations for your MikroTik routers, supporting both iBGP and eBGP modes as well as full-mesh topologies.">
+    <meta name="keywords" content="MikroTik, BGP, Generator, Script, Konfigurasi, iBGP, eBGP, Full-Mesh, RouterOS, Jaringan">
+    <meta content="index, follow, noodp" name="robots">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <style>
+	*{-webkit-transition:all .3s ease-in;-moz-transition:all .3s ease-in;-ms-transition:all .3s ease-in;transition:all .3s ease-in}blockquote,body,dd,div,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,li,ol,p,pre,span,table,td,textarea,th,tr,ul{margin:0;padding:0}body{font-size:14px;font-family:Roboto,sans-serif;margin:0}body,html{color:#292929;height:100%;width:100%;margin-top:0;padding:0;line-height:normal;background:#292929 url(https://user-images.githubusercontent.com/42666125/147363663-30767ef4-09af-48d6-8ea1-ee7a1c09e90f.png) no-repeat}*{box-sizing:border-box}.logo{margin-top:10px;margin-bottom:5px;color:#fff;text-decoration:none;font-size:25px;font-weight:700}.logo a{color:#fff!important;text-decoration:none!important}#wrap{max-width:910px;margin:0 auto;color:#ddd;padding:0 5px 0 5px}.header{height:auto;width:100%;margin-top:0;margin-bottom:0;border-top:0 solid #555}.main-wrap{display:flex}.content{float:right;width:60%;padding:15px;border-top:1px solid #bbb;border-bottom:1px solid #bbb;border-right:1px solid #bbb;background:#ddd;height:auto;color:#333;border-radius:0 5px 5px 0}.sidebar{float:left;width:40%;background-color:#ddd;border:1px solid #bbb;height:auto;color:#333;border-radius:5px 0 0 5px;padding:15px}.footer{font-size:13px;padding-top:15px;padding-bottom:15px;clear:both;width:auto}label{font-weight:600;font-size:14px}h2{display:block;font-size:1.5em;margin-block-start:0.83em;margin-block-end:0.83em;margin-inline-start:0;margin-inline-end:0;font-weight:700;unicode-bidi:isolate}h1{color:#fff;font-size:22px;margin-bottom:5px;margin-top:10px;font-weight:700}a:link{color:#f60}a:visited{color:#f60}a:hover{color:#f60}a:active{color:#f60}label{display:block;margin-bottom:.7rem;font-weight:700;position:relative;padding-left:0}input:not([type=checkbox]),select,textarea{width:100%;padding:.4rem;margin-top:.3rem;background:#222;border:1px solid #333;border-radius:5px;color:#fff}input[disabled],select[disabled],textarea[disabled]{cursor:not-allowed;opacity:.6}.inline-row{display:grid;grid-template-columns:auto auto;gap:10px;align-items:center;margin-bottom:5px}:root{--default-gap:1rem;--small-gap:0.5rem}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:#262626;border-radius:.3rem}::-webkit-scrollbar-thumb{background:#f97316;border-radius:.3rem}::-webkit-scrollbar-thumb:hover{background:#ea580c}.container{font-size:smaller;max-width:100%;display:flex;flex-direction:column;gap:0;border-radius:.3rem;box-shadow:0 0 10px rgba(0,0,0,.5);border:1px solid #404040;overflow:hidden}.inline-row>label{flex:1 1 100%;max-width:100%;box-sizing:border-box}@media (min-width:768px){.inline-row>label{flex-basis:calc(50% - 0.5rem);flex-grow:1;flex-shrink:1;max-width:none}}.auto-mesh-control{margin-bottom:1rem}.auto-mesh-control .checkbox-wrapper{display:flex;align-items:center;gap:5px;margin-top:.3rem;font-weight:400;background-color:#333;padding:8px;border-radius:5px;border:1px solid #444}.auto-mesh-control .checkbox-wrapper input[type=checkbox]{order:-1;width:auto;margin-left:5px}.auto-mesh-control .checkbox-wrapper label[for=autoMesh]{display:grid;align-items:center;margin-bottom:0;font-weight:400;cursor:pointer;padding-left:5px}.tabs-wrapper{display:flex;gap:.5rem;margin:1rem 0;flex-wrap:nowrap;align-content:stretch;justify-content:space-between}.tabs{display:flex;gap:initial;flex-wrap:wrap}.tab-btn{padding:.4rem .8rem;background:#222;border:0 solid #555;color:#eee;cursor:pointer;border-radius:.4rem;display:flex;align-items:center;justify-content:space-between;margin-top:5px}.tab-btn.active{background:#427042;color:#fff}.router{display:none;border:0 solid #333;padding:1rem;background-color:#283747;border-radius:5px}.router.active{display:block}button{background:#a04000;color:#fff;padding:.5rem 1rem;border:none;border-radius:5px;margin-right:.5rem;cursor:pointer;font-weight:700;display:inline-flex;align-items:center;gap:.5rem;flex-direction:row;flex-wrap:nowrap;align-content:space-between;justify-content:space-evenly}button:hover{background:#fb8c39}.danger{background:#dc2626}pre{background:#171717;padding:1rem;border-radius:5px;margin-top:1rem;white-space:pre-wrap;height:400px;overflow-y:scroll}.remove-tab-btn{margin-left:0;background:#b22222;color:#fff;border-radius:50%;width:1rem;height:1rem;display:flex;align-items:center;font-size:.8rem;font-weight:700;cursor:pointer;transition:background-color .2s;flex-shrink:0;flex-direction:row;align-content:center;justify-content:space-around}.remove-tab-btn:hover{background:#ef4444}.add-router-icon{display:inline-flex;align-items:baseline;width:1.1rem;height:1.1rem;border:1px solid #fff;border-radius:50%;font-size:1rem;font-weight:700;color:#fff;flex-shrink:initial;flex-wrap:nowrap;justify-content:space-evenly;align-content:flex-end;flex-direction:row-reverse}.info-box{background-color:#111;border-radius:8px;padding:1.2rem;margin-top:15px;font-size:11px;line-height:1.6;margin-bottom:20px;color:#deb887}.info-box h2{margin-top:0;color:#f97316;font-size:1.4em;margin-bottom:.8rem}.info-box p{margin-bottom:.5rem}.info-box strong{color:#fff}.main-layout{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;background-color:#333;flex-direction:row;align-content:stretch;align-items:stretch}.left-panel{flex:auto;min-width:300px;max-width:100%;box-sizing:border-box;background-color:#444;padding:20px}.right-panel{flex:1;min-width:300px;max-width:100%;box-sizing:border-box;padding-right:15px}@media (min-width:768px){.left-panel,.right-panel{flex-basis:calc(50% - 0.75rem)}}@media screen and (max-width:700px){.list-output-content{height:auto}.main-wrap{display:block}.content,.sidebar{border-radius:5px;display:block;width:100%;padding:10px}.sidebar{height:auto;margin-bottom:5px}.header h1{max-width:100%;justify-content:center}.header{border:none}.logo-left a{margin-top:10px!important;font-size:23px}.logo-left img{height:auto;width:41px;margin-top:-5px!important}h1{font-size:21px;text-align:center}.mymenu{width:100%!important}.logo{width:100%}.logo-left{justify-content:center;display:flex;width:100%}.logo-right{justify-content:center;width:100%;display:flex}.footer{font-size:13px;padding-top:15px;padding-bottom:15px;clear:both;width:auto}}@media screen and (max-width:600px){button{margin-bottom:5px}h1{font-size:19px}.logo-left a{margin-top:10px!important;font-size:20px}.logo-left img{height:auto;width:41px;margin-top:-5px!important}.mikrotik-logo{display:flex;justify-content:center;margin-top:15px}.show-homepage-menu{display:flex;justify-content:center;width:100%;clear:both}.mymenu{padding-left:0;padding-right:0}.mymenu ul{background:0 0!important;justify-content:center;display:flex}}@media screen and (max-width:500px){.show-homepage-menu{display:flex;justify-content:center;width:100%}.avatar{display:none}}@media screen and (max-width:350px){.hide-homepage{display:none}}
+  <body>
+    <div id="wrap">
+      <div id="mymenu" class="mymenu">
+        <div class="mikrotik-logo">
+        </div>
+      <div class="logo">
+        <div class="logo-right" style="float:right;">
+          <div style="float:right; margin-right:5px;">
+            <span><template shadowrootmode="closed"><style type="text/css">body{margin:0}a{text-decoration:none;outline:0}.widget{display:inline-block;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:0;line-height:0;white-space:nowrap}.btn,.social-count{position:relative;display:inline-block;display:inline-flex;height:14px;padding:2px 5px;font-size:11px;font-weight:600;line-height:14px;vertical-align:bottom;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-repeat:repeat-x;background-position:-1px -1px;background-size:110% 110%;border:1px solid}.btn{border-radius:.25em}.btn:not(:last-child){border-radius:.25em 0 0 .25em}.social-count{border-left:0;border-radius:0 .25em .25em 0}.widget-lg .btn,.widget-lg .social-count{height:16px;padding:5px 10px;font-size:12px;line-height:16px}.octicon{display:inline-block;vertical-align:text-top;fill:currentColor;overflow:visible}.btn:focus-visible,.social-count:focus-visible{outline:2px solid #0969da;outline-offset:-2px}.btn{color:#25292e;background-color:#ebf0f4;border-color:#d1d9e0;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3clinearGradient id='o' x2='0' y2='1'%3e%3cstop stop-color='%23f6f8fa'/%3e%3cstop offset='90%25' stop-color='%23ebf0f4'/%3e%3c/linearGradient%3e%3crect width='100%25' height='100%25' fill='url(%23o)'/%3e%3c/svg%3e");background-image:-moz-linear-gradient(top, #f6f8fa, #ebf0f4 90%);background-image:linear-gradient(180deg, #f6f8fa, #ebf0f4 90%);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF6F8FA', endColorstr='#FFEAEFF3')}:root .btn{filter:none}.btn:hover,.btn:focus{background-color:#e5eaee;background-position:0 -0.5em;border-color:#d1d9e0;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3clinearGradient id='o' x2='0' y2='1'%3e%3cstop stop-color='%23eff2f5'/%3e%3cstop offset='90%25' stop-color='%23e5eaee'/%3e%3c/linearGradient%3e%3crect width='100%25' height='100%25' fill='url(%23o)'/%3e%3c/svg%3e");background-image:-moz-linear-gradient(top, #eff2f5, #e5eaee 90%);background-image:linear-gradient(180deg, #eff2f5, #e5eaee 90%);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFEFF2F5', endColorstr='#FFE4E9ED')}:root .btn:hover,:root .btn:focus{filter:none}.btn:active{background-color:#e6eaef;border-color:#d1d9e0;background-image:none;filter:none}.social-count{color:#25292e;background-color:#fff;border-color:#d1d9e0}.social-count:hover,.social-count:focus{color:#0969da}.octicon-heart{color:#bf3989}</style><div class="widget"><a class="btn" href="https://github.com/buananetpbun" rel="noopener" target="_blank" aria-label="Follow"><svg viewBox="0 0 16 16" width="14" height="14" class="octicon octicon-mark-github" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg>&nbsp;<span>Follow</span></a><a class="social-count" href="https://github.com/buananetpbun?tab=followers" rel="noopener" target="_blank" aria-label="611 followers on GitHub">611</a></div></template></span>
+          </div>
+        </div>
+        <div class="logo-left" style="float:left;">
+          <a href="mikrotik-bgp-generator.html"><img alt="" style="float:left; margin-top:0px;margin-right:5px" width="35" src=""><span style="color:#ff6600 !important">BGP SCRIPT GENERATOR</span></a>
+        </div>
+      </div>
+      <div style="clear:both"></div>
+      <div class="header">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #2c3e50;
+            --bg-light: #34495e;
+            --bg-main: #eef2f5;
+            --text-light: #ecf0f1;
+            --text-dark: #333;
+            --accent-orange: #f39c12;
+            --accent-green: #2ecc71;
+            --border-color: #4a627a;
+        }
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header h1 {
+            text-align: center;
+            color: var(--bg-dark);
+            margin-bottom: 20px;
+        }
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .control-card {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .control-card label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .control-card select {
+            width: 100%;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .control-card p {
+            font-size: 0.8em;
+            color: #bdc3c7;
+            margin-top: 10px;
+        }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .router-section, .output-section {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .router-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        .tab {
+            background-color: var(--bg-dark);
+            padding: 10px 15px;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+        .tab.active {
+            background-color: #f39c12;
+            color: var(--bg-dark);
+            font-weight: 700;
+        }
+        .tab-close {
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 18px;
+        }
+        .tab-add {
+            background-color: var(--accent-green);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            align-self: center;
+        }
+        .router-config {
+            display: none;
+        }
+        .router-config.active {
+            display: block;
+        }
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #output-script {
+            width: 100%;
+            min-height: 400px;
+            background-color: #1e272e;
+            color: #d2dae2;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .btn-group {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background-color: var(--accent-orange);
+            color: var(--bg-dark);
+            font-weight: 700;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #e67e22;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="controls-grid">
+        <div class="control-card">
+            <label for="bgpMode">BGP Mode</label>
+            <select id="bgpMode">
+                <option value="ibgp">iBGP (Internal BGP - Same AS)</option>
+                <option value="ebgp">eBGP (External BGP - Different AS)</option>
+            </select>
+        </div>
+        <div class="control-card">
+            <label for="peeringStrategy">Peering Strategy</label>
+            <select id="peeringStrategy">
+                <option value="interface">Use Interface</option>
+            </select>
+        </div>
+        <div class="control-card">
+            <label for="peeringTopology">Fully Meshed Topology</label>
+            <select id="peeringTopology">
+                <option value="full-mesh">Auto Full-Mesh</option>
+            </select>
+            <p>Auto Full-Mesh Topology means every router has a direct peering connection with every other router in the same group.</p>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="router-section">
+            <div class="router-tabs" id="router-tabs">
+                <div class="tab-add" onclick="addRouter()">+</div>
+            </div>
+            <div id="router-configs">
+                </div>
+        </div>
+        <div class="output-section">
+            <h3 id="output-title">Script Output</h3>
+            <textarea id="output-script" readonly></textarea>
+            <div class="btn-group">
+                <button class="btn" onclick="copyScript()">Copy BGP Script</button>
+                <button class="btn" onclick="downloadScript()">Download BGP Script</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let routerCount = 0;
+    let activeRouterId = 1;
+
+    function createRouterForm(id) {
+        const configContainer = document.getElementById('router-configs');
+        const configDiv = document.createElement('div');
+        configDiv.className = 'router-config';
+        configDiv.id = `config-${id}`;
+        configDiv.innerHTML = `
+            <h3>iBGP for Router ${id}</h3>
+            <div class="config-grid">
+                <div class="form-group">
+                    <label for="rosVersion-${id}">ROS Version</label>
+                    <select id="rosVersion-${id}" onchange="generateActiveScript()">
+                        <option value="v6">ROS v6.xx</option>
+                        <option value="v7">ROS v7.xx</option>
+                    </select>
+                </div>
+                <div class="form-group"></div> <div class="form-group">
+                    <label for="bgpInterface-${id}">BGP Main Interface</label>
+                    <input type="text" id="bgpInterface-${id}" value="ether1" onkeyup="generateActiveScript()">
+                </div>
+                <div class="form-group">
+                    <label for="interfaceIp-${id}">IP (Local/Public/VPN)</label>
+                    <input type="text" id="interfaceIp-${id}" placeholder="e.g., 10.0.0.${id}/24" onkeyup="generateActiveScript()">
+                </div>
+                <div class="form-group">
+                    <label for="asNumber-${id}">AS Number</label>
+                    <input type="text" id="asNumber-${id}" placeholder="e.g., 65001" onkeyup="generateActiveScript()">
+                </div>
+                <div class="form-group">
+                    <label for="routerId-${id}">Router ID</label>
+                    <input type="text" id="routerId-${id}" placeholder="e.g., 1.1.1.${id}" onkeyup="generateActiveScript()">
+                </div>
+                <div class="form-group full-width">
+                    <label for="networkAd-${id}">Network Advertisement (one per line)</label>
+                    <textarea id="networkAd-${id}" placeholder="e.g., 192.168.${id}.0/24" onkeyup="generateActiveScript()"></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="filters-${id}">Expert Routing Filters - One per line (optional)</label>
+                    <textarea id="filters-${id}" onkeyup="generateActiveScript()"></textarea>
+                </div>
+            </div>
+        `;
+        configContainer.appendChild(configDiv);
+    }
+
+    function addRouter() {
+        routerCount++;
+        const tabsContainer = document.getElementById('router-tabs');
+        const newTab = document.createElement('div');
+        newTab.className = 'tab';
+        newTab.id = `tab-${routerCount}`;
+        newTab.setAttribute('onclick', `switchTab(${routerCount})`);
+        newTab.innerHTML = `
+            <span>Router ${routerCount}</span>
+            ${routerCount > 1 ? `<button class="tab-close" onclick="event.stopPropagation(); removeRouter(${routerCount})">×</button>` : ''}
+        `;
+        
+        // Insert new tab before the '+' button
+        tabsContainer.insertBefore(newTab, tabsContainer.querySelector('.tab-add'));
+        
+        createRouterForm(routerCount);
+        switchTab(routerCount);
+    }
+    
+    function removeRouter(id) {
+        document.getElementById(`tab-${id}`).remove();
+        document.getElementById(`config-${id}`).remove();
+        
+        // If the removed tab was active, switch to the first available tab
+        if(activeRouterId === id) {
+            const firstTab = document.querySelector('.router-tabs .tab');
+            if (firstTab) {
+                const newActiveId = parseInt(firstTab.id.split('-')[1]);
+                switchTab(newActiveId);
+            } else {
+                 // No tabs left, clear output
+                document.getElementById('output-title').innerText = 'Script Output';
+                document.getElementById('output-script').value = '';
+                addRouter(); // Add one back if all are deleted
+            }
+        }
+    }
+
+    function switchTab(id) {
+        activeRouterId = id;
+        
+        // Update tabs
+        document.querySelectorAll('.router-tabs .tab').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(`tab-${id}`).classList.add('active');
+        
+        // Update config forms
+        document.querySelectorAll('.router-config').forEach(config => config.classList.remove('active'));
+        document.getElementById(`config-${id}`).classList.add('active');
+        
+        generateActiveScript();
+    }
+
+    function generateActiveScript() {
+        const id = activeRouterId;
+        const bgpMode = document.getElementById('bgpMode').value;
+        const rosVersion = document.getElementById(`rosVersion-${id}`).value;
+        const bgpInterface = document.getElementById(`bgpInterface-${id}`).value.trim();
+        const interfaceIp = document.getElementById(`interfaceIp-${id}`).value.trim();
+        const asNumber = document.getElementById(`asNumber-${id}`).value.trim();
+        const routerId = document.getElementById(`routerId-${id}`).value.trim();
+        const networks = document.getElementById(`networkAd-${id}`).value.split('\\n').filter(n => n.trim());
+        const filters = document.getElementById(`filters-${id}`).value.split('\\n').filter(n => n.trim());
+
+        // Update titles
+        document.getElementById(`config-${id}`).querySelector('h3').innerText = `${bgpMode.toUpperCase()} for Router ${id}`;
+        document.getElementById('output-title').innerText = `Script Output ${bgpMode.toUpperCase()} - Router ${id}`;
+
+        let script = `### BGP for Router ${id} (${rosVersion.toUpperCase()}) Configuration ###\\n`;
+        script += `### Date: ${new Date().toLocaleDateString()} ###\\n`;
+        script += `### Script generated by Gemini ###\\n\\n`;
+
+        if (interfaceIp) {
+            script += `### IP Interface Configuration ###\\n`;
+            script += `/ip address add address=${interfaceIp} interface=${bgpInterface} comment="BGP Target Interface"\\n\\n`;
+        }
+        
+        script += `### BGP Instance Configuration ###\\n`;
+        const instanceName = `${bgpMode}_connected`;
+        if (rosVersion === 'v6') {
+             script += `/routing bgp instance set default as=${asNumber} router-id=${routerId} redistribute-connected=yes\\n\\n`;
+        } else { // v7
+             script += `/routing bgp template set default as=${asNumber} router-id=${routerId} output.network=bgp-networks\\n\\n`;
+        }
+
+        if(networks.length > 0) {
+            script += `### BGP Network Advertisement ###\\n`;
+            networks.forEach(net => {
+                script += `/routing bgp network add network=${net}\\n`;
+            });
+            script += '\\n';
+        }
+        
+        if (filters.length > 0) {
+            script += `### Firewall Rules for BGP ###\\n`;
+            script += `/ip firewall filter add chain=input protocol=tcp dst-port=179 action=accept comment="Allow BGP from any source"\\n`;
+        }
+
+        document.getElementById('output-script').value = script;
+    }
+
+    function copyScript() {
+        const outputScript = document.getElementById('output-script');
+        outputScript.select();
+        document.execCommand('copy');
+        alert('Script copied to clipboard!');
+    }
+
+    function downloadScript() {
+        const title = document.getElementById('output-title').innerText;
+        const scriptContent = document.getElementById('output-script').value.replace(/\\n/g, '\\r\\n');
+        const blob = new Blob([scriptContent], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${title.replace(/ /g, '_')}.rsc`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+
+    // Initialize with two routers
+    window.onload = function() {
+        addRouter();
+        addRouter();
+        switchTab(1); // Set the first tab as active initially
+    };
+</script>
+<div id="dialogoverlay"></div>
+    <div id="dialogbox">
+      <div>
+        <div id="dialogboxhead"></div>
+        <div id="dialogboxbody"></div>
+        <div id="dialogboxfoot"></div>
+      </div>
+    </div>
+</body>
+</html>
