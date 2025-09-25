@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MikroTik Ninja — Hide Router Info from ISP (Clean)</title>
-  <meta name="description" content="MikroTik Ninja — Hide Router Info from ISP, full features unlocked (no login)." />
-  <link rel="shortcut icon" href="https://buananetpbun.github.io/favicon.ico" type="image/x-icon">
+  <title>MikroTik Ninja — Hide Router Info from ISP (Mukidi)</title>
+  <meta name="description" content="MikroTik Ninja — Hide Router Info from ISP, full features by mukidi story (no login)." />
+  <link rel="shortcut icon" href="https://mikrotikscript.github.io/favicon.ico" type="image/x-icon">
 
   <style>
     :root{
@@ -54,9 +54,9 @@
         </div>
       </div>
       <nav>
-        <a href="https://buananetpbun.github.io" target="_blank">HOME</a>
-        <a href="https://github.com/buananetpbun" target="_blank">GITHUB</a>
-        <a href="https://fb.me/buananet.pbun" target="_blank">CONTACT</a>
+        <a href="https://https://mikrotikscript.github.io/MikroTik-Generator" target="_blank">HOME</a>
+        <a href="https://mikrotikscript.github.io/MikroTik-Generator/" target="_blank">GITHUB</a>
+        <a href="https://mikrotikscript.github.io/MikroTik-Generator/" target="_blank">CONTACT</a>
       </nav>
     </header>
 
@@ -122,7 +122,7 @@
         <div id="output" class="output">
           ################################################################
           # MIKROTIK NINJA : HIDE ROUTERBOARD INFO FROM ISP / WAN SCANNING
-          # Created By: BuanaNETPBun (clean version)
+          # Created By: Mukidi Story (clean version)
           ################################################################
           (click Generate to create the script)
         </div>
@@ -130,7 +130,7 @@
     </main>
 
     <footer>
-      © 2025 buananetpbun.github.io — Ready to upload (no Firebase / no login)
+      © 2025 mikrotikscript.github.io — Ready to upload (no Firebase / no login)
     </footer>
   </div>
 
@@ -200,14 +200,14 @@
       const lines = [];
       lines.push('################################################################');
       lines.push('# MIKROTIK NINJA : HIDE ROUTERBOARD INFO FROM ISP / WAN SCANNING');
-      lines.push('# Generated (clean) - buananetpbun.github.io');
+      lines.push('# Generated (clean) - mikrotikscript.github.io');
       lines.push('################################################################');
       lines.push('');
 
       // Interface list for protection
       if(iface){
-        lines.push(`/interface list add name=WAN-PROTECT comment="MikroTik Ninja by buananetpbun.github.io"`);
-        lines.push(`/interface list member add interface="${iface}" list=WAN-PROTECT comment="MikroTik Ninja by buananetpbun.github.io"`);
+        lines.push(`/interface list add name=WAN-PROTECT comment="MikroTik Ninja by mikrotikscript.github.io"`);
+        lines.push(`/interface list member add interface="${iface}" list=WAN-PROTECT comment="MikroTik Ninja by mikrotikscript.github.io"`);
       } else {
         lines.push(`# NOTE: No interface specified. Rules will not have in-interface-list restrictions.`);
       }
@@ -217,11 +217,11 @@
       if(opts.winbox){
         lines.push('## Block Winbox Scan (tcp/udp 8291 and common admin ports)');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=tcp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=udp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan UDP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=tcp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=udp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan UDP - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input protocol=tcp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input protocol=udp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan UDP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input protocol=tcp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input protocol=udp dst-port=21,22,23,8291,80,443,8728,8729 comment="Block Winbox Scan UDP - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -230,12 +230,12 @@
       if(opts.discovery){
         lines.push('## Block Neighbor Discovery (LLDP/neighbor discovery ports)');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=5678 protocol=tcp');
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=5678 protocol=udp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by mikrotikscript.github.io" in-interface-list=WAN-PROTECT dst-port=5678 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by mikrotikscript.github.io" in-interface-list=WAN-PROTECT dst-port=5678 protocol=udp');
           lines.push('/ip neighbor discovery-settings set discover-interface-list=!WAN-PROTECT');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" dst-port=5678 protocol=tcp');
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by buananetpbun.github.io" dst-port=5678 protocol=udp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by mikrotikscript.github.io" dst-port=5678 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Neighbor Discovery - by mikrotikscript.github.io" dst-port=5678 protocol=udp');
         }
         lines.push('');
       }
@@ -244,11 +244,11 @@
       if(opts.macServer){
         lines.push('## Block MAC Server / MAC-Winbox');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=20561 protocol=tcp');
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=20561 protocol=udp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by mikrotikscript.github.io" in-interface-list=WAN-PROTECT dst-port=20561 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by mikrotikscript.github.io" in-interface-list=WAN-PROTECT dst-port=20561 protocol=udp');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" dst-port=20561 protocol=tcp');
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by buananetpbun.github.io" dst-port=20561 protocol=udp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by mikrotikscript.github.io" dst-port=20561 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block MAC Address - by mikrotikscript.github.io" dst-port=20561 protocol=udp');
         }
         lines.push('/tool mac-server mac-winbox set allowed-interface-list=none');
         lines.push('/tool mac-server set allowed-interface-list=none');
@@ -260,11 +260,11 @@
       if(opts.traceroute){
         lines.push('## Block Traceroute (ports 33434-33534)');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=33434-33534 protocol=tcp');
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" in-interface-list=WAN-PROTECT dst-port=33434-33534 protocol=udp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by mikrotikscript.github.io" in-interface-list=WAN-PROTECT dst-port=33434-33534 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by mikrotikscript.github.io" in-interface-list=WAN-PROTECT dst-port=33434-33534 protocol=udp');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" dst-port=33434-33534 protocol=tcp');
-          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by buananetpbun.github.io" dst-port=33434-33534 protocol=udp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by mikrotikscript.github.io" dst-port=33434-33534 protocol=tcp');
+          lines.push('/ip firewall filter add action=drop chain=input comment="Block Traceroute - by mikrotikscript.github.io" dst-port=33434-33534 protocol=udp');
         }
         lines.push('');
       }
@@ -273,9 +273,9 @@
       if(opts.romon){
         lines.push('## Block RoMON');
         if(iface){
-          lines.push(`/tool romon port add disabled=no forbid=yes comment="Block RoMON - by buananetpbun.github.io" interface="${iface}"`);
+          lines.push(`/tool romon port add disabled=no forbid=yes comment="Block RoMON - by mikrotikscript.github.io" interface="${iface}"`);
         } else {
-          lines.push('/tool romon set enabled=no comment="Block RoMON - by buananetpbun.github.io"');
+          lines.push('/tool romon set enabled=no comment="Block RoMON - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -284,11 +284,11 @@
       if(opts.dns){
         lines.push('## Block Open Recursive DNS (port 53)');
         if(iface){
-          lines.push('/ip firewall filter add chain=input dst-port=53 in-interface-list=WAN-PROTECT protocol=tcp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add chain=input dst-port=53 in-interface-list=WAN-PROTECT protocol=udp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add chain=input dst-port=53 in-interface-list=WAN-PROTECT protocol=tcp action=drop comment="Block Open Recursive DNS - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add chain=input dst-port=53 in-interface-list=WAN-PROTECT protocol=udp action=drop comment="Block Open Recursive DNS - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add chain=input dst-port=53 protocol=tcp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add chain=input dst-port=53 protocol=udp action=drop comment="Block Open Recursive DNS - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add chain=input dst-port=53 protocol=tcp action=drop comment="Block Open Recursive DNS - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add chain=input dst-port=53 protocol=udp action=drop comment="Block Open Recursive DNS - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -298,11 +298,11 @@
         lines.push('## Block Open PROXY (3128,8080)');
         lines.push('/ip proxy set enabled=no');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 in-interface-list=WAN-PROTECT protocol=tcp comment="Block Open PROXY - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 in-interface-list=WAN-PROTECT protocol=udp comment="Block Open PROXY - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 in-interface-list=WAN-PROTECT protocol=tcp comment="Block Open PROXY - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 in-interface-list=WAN-PROTECT protocol=udp comment="Block Open PROXY - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 protocol=tcp comment="Block Open PROXY - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 protocol=udp comment="Block Open PROXY - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 protocol=tcp comment="Block Open PROXY - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=3128,8080 protocol=udp comment="Block Open PROXY - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -312,11 +312,11 @@
         lines.push('## Block BTest Server');
         lines.push('/tool bandwidth-server set enabled=no authenticate=yes');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 in-interface-list=WAN-PROTECT protocol=tcp comment="Block BTest Server - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 in-interface-list=WAN-PROTECT protocol=udp comment="Block BTest Server - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 in-interface-list=WAN-PROTECT protocol=tcp comment="Block BTest Server - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 in-interface-list=WAN-PROTECT protocol=udp comment="Block BTest Server - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 protocol=tcp comment="Block BTest Server - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 protocol=udp comment="Block BTest Server - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 protocol=tcp comment="Block BTest Server - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2000 protocol=udp comment="Block BTest Server - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -326,11 +326,11 @@
         lines.push('## Block SNMP');
         lines.push('/snmp set enabled=no');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 in-interface-list=WAN-PROTECT protocol=tcp comment="Block SNMP - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 in-interface-list=WAN-PROTECT protocol=udp comment="Block SNMP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 in-interface-list=WAN-PROTECT protocol=tcp comment="Block SNMP - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 in-interface-list=WAN-PROTECT protocol=udp comment="Block SNMP - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 protocol=tcp comment="Block SNMP - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 protocol=udp comment="Block SNMP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 protocol=tcp comment="Block SNMP - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=161,162 protocol=udp comment="Block SNMP - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -339,11 +339,11 @@
       if(opts.thedude){
         lines.push('## Block The Dude server ports');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 in-interface-list=WAN-PROTECT protocol=tcp comment="Block The Dude - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 in-interface-list=WAN-PROTECT protocol=udp comment="Block The Dude - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 in-interface-list=WAN-PROTECT protocol=tcp comment="Block The Dude - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 in-interface-list=WAN-PROTECT protocol=udp comment="Block The Dude - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 protocol=tcp comment="Block The Dude - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 protocol=udp comment="Block The Dude - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 protocol=tcp comment="Block The Dude - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=2210,2211 protocol=udp comment="Block The Dude - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -361,9 +361,9 @@
       if(opts.ssdp){
         lines.push('## Block SSDP / UPnP (1900)');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=1900 in-interface-list=WAN-PROTECT protocol=udp comment="Block SSDP/UPnP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1900 in-interface-list=WAN-PROTECT protocol=udp comment="Block SSDP/UPnP - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=1900 protocol=udp comment="Block SSDP/UPnP - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1900 protocol=udp comment="Block SSDP/UPnP - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -372,9 +372,9 @@
       if(opts.socks){
         lines.push('## Block SOCKS Proxy (1080)');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=1080 in-interface-list=WAN-PROTECT protocol=tcp comment="Block SOCKS Proxy - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1080 in-interface-list=WAN-PROTECT protocol=tcp comment="Block SOCKS Proxy - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input dst-port=1080 protocol=tcp comment="Block SOCKS Proxy - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input dst-port=1080 protocol=tcp comment="Block SOCKS Proxy - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -383,9 +383,9 @@
       if(opts.ping){
         lines.push('## Block Ping (ICMP echo)');
         if(iface){
-          lines.push('/ip firewall filter add action=drop chain=input protocol=icmp in-interface-list=WAN-PROTECT comment="Block Ping (ICMP Echo) - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input protocol=icmp in-interface-list=WAN-PROTECT comment="Block Ping (ICMP Echo) - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=drop chain=input protocol=icmp comment="Block Ping (ICMP Echo) - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input protocol=icmp comment="Block Ping (ICMP Echo) - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -394,11 +394,11 @@
       if(opts.logport){
         lines.push('## Log Port Scanner then drop');
         if(iface){
-          lines.push('/ip firewall filter add action=log chain=input in-interface-list=WAN-PROTECT protocol=tcp log-prefix="PORT-SCAN" comment="Log Port Scanner - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=tcp comment="Drop after log - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=log chain=input in-interface-list=WAN-PROTECT protocol=tcp log-prefix="PORT-SCAN" comment="Log Port Scanner - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input in-interface-list=WAN-PROTECT protocol=tcp comment="Drop after log - by mikrotikscript.github.io"');
         } else {
-          lines.push('/ip firewall filter add action=log chain=input protocol=tcp log-prefix="PORT-SCAN" comment="Log Port Scanner - by buananetpbun.github.io"');
-          lines.push('/ip firewall filter add action=drop chain=input protocol=tcp comment="Drop after log - by buananetpbun.github.io"');
+          lines.push('/ip firewall filter add action=log chain=input protocol=tcp log-prefix="PORT-SCAN" comment="Log Port Scanner - by mikrotikscript.github.io"');
+          lines.push('/ip firewall filter add action=drop chain=input protocol=tcp comment="Drop after log - by mikrotikscript.github.io"');
         }
         lines.push('');
       }
@@ -406,7 +406,7 @@
       // Mask TTL
       if(opts.maskttl){
         lines.push('## Mask TTL (set TTL to 65)');
-        lines.push('/ip firewall mangle add chain=prerouting action=change-ttl new-ttl=65 passthrough=yes comment="Mask TTL - by buananetpbun.github.io"');
+        lines.push('/ip firewall mangle add chain=prerouting action=change-ttl new-ttl=65 passthrough=yes comment="Mask TTL - by mikrotikscript.github.io"');
         lines.push('');
       }
 
@@ -414,7 +414,7 @@
       if(opts.dropbogon){
         lines.push('## Drop Bogon IPs (example, add your bogon ranges as needed)');
         lines.push('# Example: /ip firewall address-list add list=BOGONS address=127.0.0.0/8');
-        lines.push('# /ip firewall filter add chain=input src-address-list=BOGONS action=drop comment="Drop Bogon - by buananetpbun.github.io"');
+        lines.push('# /ip firewall filter add chain=input src-address-list=BOGONS action=drop comment="Drop Bogon - by mikrotikscript.github.io"');
         lines.push('');
       }
 
@@ -502,7 +502,7 @@
       document.getElementById('input-mac-address').value = '';
       const boxes = document.querySelectorAll('.checkbox-grid input[type=checkbox]');
       boxes.forEach(cb => cb.checked = false);
-      document.getElementById('output').textContent = '################################################################\\n# MIKROTIK NINJA : HIDE ROUTERBOARD INFO FROM ISP / WAN SCANNING\\n# Created By: BuanaNETPBun (clean version)\\n################################################################\\n(click Generate to create the script)';
+      document.getElementById('output').textContent = '################################################################\\n# MIKROTIK NINJA : HIDE ROUTERBOARD INFO FROM ISP / WAN SCANNING\\n# Created By: mikrotikscript (Mukidi Story)\\n################################################################\\n(click Generate to create the script)';
       window._lastGeneratedScriptText = null;
     }
 
@@ -522,3 +522,4 @@
   </script>
 </body>
 </html>
+
