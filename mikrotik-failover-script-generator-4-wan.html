@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mikrotik Multi-WAN Failover Script Generator — Mukidi Story</title>
+  <meta name="description" content="Generator script failover otomatis Mikrotik multi-WAN (WAN1 s/d WAN4) — versi Mukidi Story.">
+  <link rel="shortcut icon" href="https://mikrotikscript.github.io/favicon.ico" type="image/x-icon">
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#171717;color:#eee;margin:0;padding:20px}
+    .wrap{max-width:1000px;margin:0 auto}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    header h1{color:#ff6600;margin:0;font-size:20px}
+    nav a{color:#aaa;margin-left:12px;text-decoration:none}
+    .grid{display:flex;gap:18px}
+    @media(max-width:900px){.grid{flex-direction:column}}
+    .panel{background:#222;padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);flex:1}
+    label{display:block;font-weight:700;margin-bottom:6px;color:#ddd}
+    input[type=text]{width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff;margin-bottom:10px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    button{background:#ff6600;border:none;color:#111;padding:8px 12px;border-radius:6px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.05);color:#ddd}
+    .output{background:#050505;border:1px solid #222;padding:12px;border-radius:6px;min-height:260px;white-space:pre-wrap;font-family:monospace;color:#cdebd6;overflow:auto}
+    .note{font-size:13px;color:#aaa;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Mikrotik Multi-WAN Failover Script Generator (Mukidi Story)</h1>
+        <div class="note">Mendukung sampai 4 WAN. Semua fitur aktif.</div>
+      </div>
+      <nav>
+        <a href="https://mikrotikscript.github.io/MikroTik-Generator/" target="_blank">HOME</a>
+        <a href="https://github.com/mikrotikscript" target="_blank">GITHUB</a>
+        <a href="#" target="_blank">CONTACT</a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <!-- input -->
+      <section class="panel" style="max-width:380px">
+        <h3>WAN 1 (utama)</h3>
+        <label for="wan1">WAN1 Interface</label>
+        <input id="wan1" type="text" placeholder="mis: ether1">
+        <label for="wan1gw">WAN1 Gateway IP</label>
+        <input id="wan1gw" type="text" placeholder="mis: 192.168.1.1">
+
+        <h3>WAN 2</h3>
+        <label for="wan2">WAN2 Interface</label>
+        <input id="wan2" type="text" placeholder="mis: ether2">
+        <label for="wan2gw">WAN2 Gateway IP</label>
+        <input id="wan2gw" type="text" placeholder="mis: 192.168.2.1">
+
+        <h3>WAN 3</h3>
+        <label for="wan3">WAN3 Interface</label>
+        <input id="wan3" type="text" placeholder="mis: ether3">
+        <label for="wan3gw">WAN3 Gateway IP</label>
+        <input id="wan3gw" type="text" placeholder="mis: 192.168.3.1">
+
+        <h3>WAN 4</h3>
+        <label for="wan4">WAN4 Interface</label>
+        <input id="wan4" type="text" placeholder="mis: ether4">
+        <label for="wan4gw">WAN4 Gateway IP</label>
+        <input id="wan4gw" type="text" placeholder="mis: 192.168.4.1">
+
+        <h3>Pengaturan Failover</h3>
+        <label for="dns-check">IP / DNS untuk check (ping)</label>
+        <input id="dns-check" type="text" value="8.8.8.8" placeholder="8.8.8.8">
+
+        <label for="interval">Interval check</label>
+        <input id="interval" type="text" value="00:00:10" placeholder="00:00:10">
+
+        <div class="controls">
+          <button id="btn-generate">Generate</button>
+          <button class="ghost" onclick="copyOutput()">Copy Script</button>
+          <button class="ghost" onclick="downloadRSC()">Download .rsc</button>
+          <button class="ghost" onclick="resetForm()">Reset</button>
+        </div>
+      </section>
+
+      <!-- output -->
+      <section class="panel">
+        <label>Generated Script</label>
+        <div id="output" class="output">
+################################################################
+# Mikrotik Multi-WAN Failover Script Generator (Mukidi Story version)
+# Created by mikrotikscript.github.io
+################################################################
+Klik tombol Generate untuk membuat script.
+        </div>
+      </section>
+    </main>
+
+    <footer style="margin-top:14px;color:#aaa;font-size:13px">
+      © 2025 mikrotikscript.github.io — Mukidi Story version (Mukidi Story)
+    </footer>
+  </div>
+
+  <script>
+    function escapeRO(s){ return String(s).replace(/"/g,'\\"'); }
+
+    function generate(){
+      const wan1=document.getElementById('wan1').value.trim();
+      const wan1gw=document.getElementById('wan1gw').value.trim();
+      const wan2=document.getElementById('wan2').value.trim();
+      const wan2gw=document.getElementById('wan2gw').value.trim();
+      const wan3=document.getElementById('wan3').value.trim();
+      const wan3gw=document.getElementById('wan3gw').value.trim();
+      const wan4=document.getElementById('wan4').value.trim();
+      const wan4gw=document.getElementById('wan4gw').value.trim();
+      const dns=document.getElementById('dns-check').value.trim()||"8.8.8.8";
+      const interval=document.getElementById('interval').value.trim()||"00:00:10";
+
+      const lines=[];
+      lines.push('################################################################');
+      lines.push('# Mikrotik Multi-WAN Failover Script');
+      lines.push('# Generated by mikrotikscript.github.io');
+      lines.push('################################################################');
+      lines.push('');
+
+      // default routes
+      if(wan1gw){ lines.push(`/ip route add gateway=${wan1gw} check-gateway=ping distance=1`); }
+      if(wan2gw){ lines.push(`/ip route add gateway=${wan2gw} check-gateway=ping distance=2`); }
+      if(wan3gw){ lines.push(`/ip route add gateway=${wan3gw} check-gateway=ping distance=3`); }
+      if(wan4gw){ lines.push(`/ip route add gateway=${wan4gw} check-gateway=ping distance=4`); }
+
+      lines.push('');
+      lines.push('/tool netwatch');
+      if(wan1gw){
+        lines.push(`add host=${dns} interval=${interval} timeout=2s up-script="/ip route enable [find where gateway=${wan1gw}]" down-script="/ip route disable [find where gateway=${wan1gw}]" comment="Failover check WAN1"`);
+      } else {
+        lines.push(`# WARNING: WAN1 gateway tidak diisi, netwatch tidak dibuat.`);
+      }
+
+      lines.push('');
+      lines.push('# Tambahan: RouterOS akan otomatis pindah ke route berikutnya sesuai distance jika gateway sebelumnya tidak reachable.');
+      lines.push('');
+
+      const script=lines.join('\n');
+      document.getElementById('output').textContent=script;
+      window._lastGen=script;
+    }
+
+    function copyOutput(){
+      const out=document.getElementById('output');
+      const range=document.createRange();
+      range.selectNodeContents(out);
+      const sel=window.getSelection();
+      sel.removeAllRanges();sel.addRange(range);
+      try{document.execCommand('copy');alert('Script disalin ke clipboard.');}
+      catch(e){alert('Salin gagal, pilih manual.');}
+      sel.removeAllRanges();
+    }
+
+    function downloadRSC(){
+      const txt=window._lastGen||document.getElementById('output').textContent;
+      if(!txt||!txt.trim()){alert('Belum ada script. Klik Generate dulu.');return;}
+      const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='mikrotik-multiwan-failover.rsc';
+      document.body.appendChild(a);
+      a.click();a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function resetForm(){
+      if(!confirm('Reset semua input?'))return;
+      ['wan1','wan1gw','wan2','wan2gw','wan3','wan3gw','wan4','wan4gw'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('dns-check').value='8.8.8.8';
+      document.getElementById('interval').value='00:00:10';
+      document.getElementById('output').textContent='################################################################\\n# Mikrotik Multi-WAN Failover Script Generator (Mukidi Story version)\\n# Created by mikrotikscript.github.io\\n################################################################\\nKlik tombol Generate untuk membuat script.';
+      window._lastGen=null;
+    }
+
+    document.getElementById('btn-generate').addEventListener('click',generate);
+  </script>
+</body>
+</html>
